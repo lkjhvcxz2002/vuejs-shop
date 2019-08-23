@@ -14,7 +14,8 @@
         <p class="col-6 lead">${{ item.price }}</p>
         <p class="col-6">
           <button class="btn btn-success pull-right" :disabled="item.quantity === 0" @click="addItem">
-            Add to cart
+            <v-icon name="beer"/>
+            Add to cart 1
           </button>
         </p>
       </div>
@@ -27,7 +28,12 @@
 import {
   mapActions
 } from 'vuex';
+import Icon from 'vue-awesome'
+
 export default {
+  components: {
+    'v-icon': Icon
+  },
   props: ['item', 'displayList'],
   methods: {
     ...mapActions(['updateCart']),
