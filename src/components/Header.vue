@@ -30,7 +30,9 @@
         <!-- <router-link to="/register" tag="li" v-if="!isLoggedIn" class="nav-item" disabled>
           <a class="nav-link">投票(09/01開放)</a>
         </router-link> -->
-        <a class="nav-link">投票區(09/01開放)</a>
+        <li class="nav-item">
+          <a class="nav-link">投票區(09/01開放)</a>
+        </li>
       </ul>
     </div>
   </div>
