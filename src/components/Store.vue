@@ -7,7 +7,7 @@
       <filter-bar></filter-bar>
 
   <div class="row" v-if="!isProductLoading">
-    <app-product-item v-for="prod in products" :item="prod" :key="prod.id" :displayList="displayList"></app-product-item>
+    <app-product-item v-for="prod in products" :item="prod" :key="prod.key" :displayList="displayList"></app-product-item>
   </div>
 
 </div>

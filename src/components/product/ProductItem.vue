@@ -2,7 +2,8 @@
 <div class="col-sm-5 col-md-6" :class="{'list-group-item': displayList}">
   <div class="thumbnail card">
     <div class="img-event intrinsic">
-      <VuePureLightbox class="thumbnail-image card-img-top intrinsic-item p-3"
+      <!-- <img :src="item.pic" class="thumbnail-image card-img-top intrinsic-item p-3" v-if="item.pic.indexOf('?v') != -1"/> -->
+      <VuePureLightbox class="thumbnail-image card-img-top intrinsic-item p-3" v-if="item.pic.indexOf('?v') == -1"
           :thumbnail="item.pic"
           :images="[item.pic]"
         />
@@ -13,7 +14,7 @@
       <h6 class="card-subtitle mb-2 remain">
         <a :href="item.fb" target="_blank" style="color: #0054d6; font-size: 20px;" v-if="item.fb">臉書連結</a>
       </h6>
-      <div class="row" style="height: 70px;">
+      <div class="row" style="height: 40px;">
         <p class="col-12 lead">投稿組別: {{item.group}}</p>
       </div>
       <div class="row">
@@ -96,6 +97,7 @@ div.card {
   color: purple;
   font-size: 24px;
   margin-left: 20px;
+  margin-top: 20px;
 }
 
 .list-group-item {

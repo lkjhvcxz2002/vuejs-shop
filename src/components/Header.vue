@@ -3,7 +3,7 @@
   <div class="container">
     <!-- Brand and toggle get grouped for better mobile display -->
     <!-- <router-link to="/" class="navbar-brand mr-auto">2020 偽娘桌曆徵選 </router-link> -->
-    <router-link to="/login" class="navbar-brand mr-auto webTitle">2020 偽娘桌曆徵選 </router-link>
+    <router-link to="/list" class="navbar-brand mr-auto webTitle">2020 偽娘桌曆徵選 </router-link>
     <button
         class="navbar-toggler"
         type="button"
@@ -21,17 +21,17 @@
 
       </ul>
       <ul class="nav navbar-nav">
-        <router-link to="/login" tag="li" v-if="!isLoggedIn" class="nav-item" active-class="active">
+        <router-link to="/list" tag="li" v-if="!isLoggedIn" class="nav-item" active-class="active">
           <a class="nav-link">參加者列表</a>
         </router-link>
         <li v-if="isLoggedIn" class="li-pointer nav-item">
           <a @click="logout" class="nav-link">Logout {{ userEmail }}</a>
         </li>
-        <!-- <router-link to="/register" tag="li" v-if="!isLoggedIn" class="nav-item" disabled>
+        <!-- <router-link to="/main" tag="li" v-if="!isLoggedIn" class="nav-item" disabled>
           <a class="nav-link">投票(09/01開放)</a>
         </router-link> -->
         <li class="nav-item">
-          <a class="nav-link">投票區(09/01開放)</a>
+          <a class="nav-link" style="color: #5f5f5f">投票區(09/01開放)</a>
         </li>
       </ul>
     </div>

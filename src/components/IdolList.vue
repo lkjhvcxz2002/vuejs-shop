@@ -24,10 +24,6 @@ import idolTable from './product/IdolTable.vue';
 import GridLoader from 'vue-spinner/src/GridLoader.vue';
 import { setTimeout } from 'timers';
 
-pJson.forEach((element, index) => {
-  element.id = index + 1;
-});
-
 export default {
   data() {
     return {
@@ -49,15 +45,11 @@ export default {
       this.PPJson = pJson;
     }, 500)
     this.$events.$on('filter-set', eventData => this.onFilterSet(eventData));
-    this.$events.$on('filter-reset', e => this.onFilterReset());
   },
   methods: {
     onFilterSet (filterText) {
       if(filterText) this.PPJson = pJson.filter(o => o.name.toLowerCase().indexOf(filterText) != -1);
       else this.PPJson = pJson;
-    },
-    onFilterReset () {
-      console.log('filter-reset')
     }
   }
 }

@@ -549,34 +549,26 @@
   },
   {
     "id": "71",
-    "name": "蔡承佑/我才",
-    "fb": "https://www.facebook.com/profile.php?id=100011446599735",
-    "Group": "Cosplay/寫真/沙龍照組",
-    "pic1": "https://i.imgur.com/oD5VSHq.jpg",
-    "pic2": "https://i.imgur.com/paBSJz7.jpg"
-  },
-  {
-    "id": "72",
     "name": "檸檬奈",
     "fb": "用ig",
     "Group": "Cosplay/寫真/沙龍照組",
     "pic1": "https://i.imgur.com/ICAedAe.jpg"
   },
   {
-    "id": "73",
+    "id": "72",
     "name": "隽",
     "Group": "日常生活組",
     "pic1": "https://i.imgur.com/aRozsTc.jpg"
   },
   {
-    "id": "74",
+    "id": "73",
     "name": "李彥承",
     "fb": "https://www.facebook.com/hades801231",
     "Group": "Cosplay/寫真/沙龍照組",
     "pic1": "https://i.imgur.com/maIDiAz.jpg"
   },
   {
-    "id": "75",
+    "id": "74",
     "name": "王雨傑",
     "fb": "月狐（黑無相）",
     "Group": "Cosplay/寫真/沙龍照組",
@@ -584,7 +576,7 @@
     "pic2": "https://i.imgur.com/a15manr.jpg"
   },
   {
-    "id": "76",
+    "id": "75",
     "name": "小米",
     "fb": "https://www.facebook.com/CD.little.rice",
     "Group": "日常生活組",
@@ -592,7 +584,7 @@
     "pic2": "https://i.imgur.com/nKaGEM2.jpg"
   },
   {
-    "id": "77",
+    "id": "76",
     "name": "揪吉",
     "fb": "https://www.facebook.com/profile.php?id=100003683163688",
     "Group": "日常生活組",
@@ -600,7 +592,20 @@
     "pic2": "https://i.imgur.com/iMaAK3C.jpg"
   },
   {
-    "id": "78"
+    "id": "77",
+    "name": "蔡承佑/我才",
+    "fb": "https://www.facebook.com/profile.php?id=100011446599735",
+    "Group": "Cosplay/寫真/沙龍照組",
+    "pic1": "https://i.imgur.com/K4IVFAs.jpg",
+    "pic2": "https://i.imgur.com/3IbEmxx.jpg"
+  },
+  {
+    "id": "78",
+    "name": "Amy",
+    "fb": "https://www.facebook.com/SabinaAmy",
+    "Group": "Cosplay/寫真/沙龍照組",
+    "pic1": "https://i.imgur.com/4foXosF.jpg",
+    "pic2": "https://i.imgur.com/oiNj3Md.jpg"
   },
   {
     "id": "79"
@@ -697,8 +702,5 @@
   },
   {
     "id": "110"
-  },
-  {
-    "id": "111"
   }
 ]
