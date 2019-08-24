@@ -3,8 +3,7 @@
       <div class="ui form">
         <div class="inline field">
           <label>搜尋:</label>
-          <input type="text" v-model="filterText" class="three wide column" @keyup="doFilter" placeholder="name, nickname, or email">
-          <button class="ui button resetBtn" @click="resetFilter">Reset</button>
+          <input type="text" v-model="filterText" class="three column" @keyup="doFilter" placeholder="name, nickname, or email">
         </div>
       </div>
     </div>

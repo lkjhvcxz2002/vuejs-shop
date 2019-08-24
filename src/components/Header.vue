@@ -3,7 +3,7 @@
   <div class="container">
     <!-- Brand and toggle get grouped for better mobile display -->
     <!-- <router-link to="/" class="navbar-brand mr-auto">2020 偽娘桌曆徵選 </router-link> -->
-    <router-link to="/login" class="navbar-brand mr-auto">2020 偽娘桌曆徵選 </router-link>
+    <router-link to="/login" class="navbar-brand mr-auto webTitle">2020 偽娘桌曆徵選 </router-link>
     <button
         class="navbar-toggler"
         type="button"
@@ -81,5 +81,10 @@ export default {
 
 .li-pointer:hover {
   cursor: pointer;
+}
+
+.webTitle {
+  font-size: 18pt;
+  font-size: bold;
 }
 </style>

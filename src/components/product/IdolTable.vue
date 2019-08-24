@@ -1,14 +1,14 @@
 <template>
 <div >
     <div class="ui">
-        <button class="ui primary button right floated" v-on:click="toRegister()">報名參加</button>
-        <button class="ui positive button right floated" v-on:click="toDetail()">活動細節</button>
+        <button class="ui small primary button right floated" v-on:click="toRegister()">報名參加</button>
+        <button class="ui small positive button right floated" v-on:click="toDetail()">活動細節</button>
     </div>
   <filter-bar></filter-bar>
   <Vuetable ref="vuetable"
     :data="displayList"
     :fields="fields"
-    class="mainTable"
+    :css="css.table"
   ></Vuetable>
   <div class="footer"></div>
 </div>
@@ -25,10 +25,13 @@ import Vuetable from 'vuetable-2'
 import FilterBar from './FilterBar'
 
 let showImage = function(value) {
+  if(!value) return "<span>(無資料)</span>";
   return "<a href='" + value + "' target='_blank'>圖片連結</a>";
 };
 let showLink = function(value) {
-  return "<a href='" + value + "' target='_blank'>臉書網址</a>";
+  if(!value) return "<span>(無資料)</span>";
+  if(value.indexOf("http") != -1) return "<a href='" + value + "' target='_blank'>臉書網址</a>";
+  else return "<span>" + value + "</span>";
 };
 
 let fields = [
@@ -43,7 +46,13 @@ let fields = [
 export default {
     data() {
         return {
-            fields: fields
+            fields: fields,
+            css: {
+              table: {
+                tableClass: 'table table-striped table-bordered table-hover',
+                loadingClass: 'loading',
+              }
+            }
         }
     },
   components: {
