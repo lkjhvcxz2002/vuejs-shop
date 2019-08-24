@@ -1,45 +1,60 @@
 <template>
-<div class="mb-3 col-sm-6 col-md-4 item" :class="{'list-group-item': displayList}">
-  <div class="thumbnail card">
-    <div class="img-event intrinsic">
-      <VuePureLightbox class="thumbnail-image card-img-top intrinsic-item p-3"
-          :thumbnail="item.thumbnail_url"
-          :images="[item.thumbnail_url]"
-        />
+<div >
+    <div class="ui">
+        <button class="ui primary button right floated" v-on:click="toRegister()">報名參加</button>
+        <button class="ui positive button right floated" v-on:click="toDetail()">活動細節</button>
     </div>
-    <div class="card-body">
-      <router-link :to="'/product/' + item.id" tag="h5" class="card-title"><a>{{ item.title }}</a></router-link>
-      <h6 class="card-subtitle mb-2 remain">{{ item.quantity }} left in stock</h6>
-
-      <p class="card-text truncate">{{ item.description | shortDescription}}</p>
-
-      <div class="row">
-        <p class="col-6 lead">{{ item.Name }}</p>
-        <p class="col-6">
-          <button class="btn btn-success pull-right" :disabled="item.quantity === 0" @click="addItem">
-            <v-icon name="plus"/>
-            我喜歡
-          </button>
-        </p>
-      </div>
-    </div>
-  </div>
+  <filter-bar></filter-bar>
+  <Vuetable ref="vuetable"
+    :data="displayList"
+    :fields="fields"
+    class="mainTable"
+  ></Vuetable>
+  <div class="footer"></div>
 </div>
 </template>
 
 <script>
 import {
-  mapActions
+  mapActions, mapGetters
 } from 'vuex';
 import Icon from 'vue-awesome'
 import VuePureLightbox from 'vue-pure-lightbox'
 
+import Vuetable from 'vuetable-2'
+import FilterBar from './FilterBar'
+
+let showImage = function(value) {
+  return "<a href='" + value + "' target='_blank'>圖片連結</a>";
+};
+let showLink = function(value) {
+  return "<a href='" + value + "' target='_blank'>臉書網址</a>";
+};
+
+let fields = [
+  {name: 'id', title: '序號'},  
+  {name: 'name', title: '姓名'},
+  {name: 'fb', title: '臉書網址', callback: showLink},
+  {name: 'Group', title: '報名組別'},
+  {name: 'pic1', title: '照片一', callback: showImage},
+  {name: 'pic2', title: '照片二', callback: showImage},
+]
+
 export default {
+    data() {
+        return {
+            fields: fields
+        }
+    },
   components: {
     'v-icon': Icon,
-    'VuePureLightbox': VuePureLightbox
+    'VuePureLightbox': VuePureLightbox,
+    Vuetable,
+    'filter-bar': FilterBar,
   },
-  props: ['item', 'displayList'],
+  props: ['filter', 'displayList'],
+  mounted() {
+  },
   methods: {
     ...mapActions(['updateCart']),
     addItem() {
@@ -49,6 +64,16 @@ export default {
         isAdd: true
       };
       this.updateCart(order);
+    },
+    toDetail() {
+        let detailUrl = "https://docs.google.com/document/d/1xwfDpqRQRX6Q4Hze4SVLbhuNQF4K1Z0rl30cIk2Cb7c/edit?usp=sharing";
+        window.open(detailUrl, "_blank");
+    },
+    toRegister() {
+        window.confirm("報名前請先確認閱讀過活動細節~", function() {
+            let registerUrl ="https://docs.google.com/forms/d/1LRwxeKCBumzFuQ-lOlxYJbMdBCvSSB2EbgV_WDJshiw/edit";
+            window.open(registerUrl, "_blank");
+        }, function(){}) ;
     }
   },
   filters: {
@@ -75,6 +100,10 @@ div.card {
 
 .remain {
   color: #d17581;
+}
+
+.footer {
+    height: 50px;
 }
 
 .grow {
