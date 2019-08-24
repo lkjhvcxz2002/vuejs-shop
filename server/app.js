@@ -22,8 +22,8 @@ app.get('*', function (req, res) {
 });
 
 // 监听
-app.listen(8080, function () {
-  console.log('success listen...8080');
+app.listen(3000, function () {
+  console.log('success listen...3000');
 });
 
 module.exports = app;

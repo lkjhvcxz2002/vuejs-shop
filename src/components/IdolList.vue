@@ -22,6 +22,7 @@ import pJson from '../../data/idols.json'
 import { mapGetters } from 'vuex'
 import idolTable from './product/IdolTable.vue';
 import GridLoader from 'vue-spinner/src/GridLoader.vue';
+import { setTimeout } from 'timers';
 
 pJson.forEach((element, index) => {
   element.id = index + 1;
@@ -44,8 +45,9 @@ export default {
     idolTable
   },
   mounted() {
-
-    this.PPJson = pJson;
+    setTimeout(() =>{
+      this.PPJson = pJson;
+    }, 500)
     this.$events.$on('filter-set', eventData => this.onFilterSet(eventData));
     this.$events.$on('filter-reset', e => this.onFilterReset());
   },
