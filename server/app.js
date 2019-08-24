@@ -23,5 +23,7 @@ app.get('*', function (req, res) {
 
 // 监听
 app.listen(8080, function () {
-  console.log('success listen...8081');
+  console.log('success listen...8080');
 });
+
+module.exports = app;
