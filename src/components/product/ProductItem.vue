@@ -1,26 +1,32 @@
 <template>
-<div class="col-sm-5 col-md-4" :class="{'list-group-item': displayList}">
+<div class="col-sm-5 col-md-6" :class="{'list-group-item': displayList}">
   <div class="thumbnail card">
     <div class="img-event intrinsic">
       <VuePureLightbox class="thumbnail-image card-img-top intrinsic-item p-3"
-          :thumbnail="item.thumbnail_url"
-          :images="[item.thumbnail_url]"
+          :thumbnail="item.pic"
+          :images="[item.pic]"
         />
     </div>
+
     <div class="card-body">
-      <router-link :to="'/product/' + item.id" tag="h5" class="card-title"><a>{{ item.name }}</a></router-link>
+      <h6 class="card-title" style="color: green; font-size: 26px"><a>{{ item.name }}</a></h6>
       <h6 class="card-subtitle mb-2 remain">
-        <a :href="item.fb" target="_blank" style="color: #0054d6" v-if="item.fb">臉書連結</a>
+        <a :href="item.fb" target="_blank" style="color: #0054d6; font-size: 20px;" v-if="item.fb">臉書連結</a>
       </h6>
-      <div class="row" style="height: 70px;"></div>
+      <div class="row" style="height: 70px;">
+        <p class="col-12 lead">投稿組別: {{item.group}}</p>
+      </div>
       <div class="row">
-        <p class="col-6 lead"></p>
+        <p class="col-6"></p>
         <p class="col-6">
           <button class="btn btn-success pull-right" :disabled="item.quantity === 0" @click="addItem">
             <v-icon name="plus"/>
             我喜歡
           </button>
         </p>
+      </div>
+      <div class="row">
+        <h2 class="picVoteCount">已經獲得 {{item.count}} 票</h2>
       </div>
     </div>
   </div>
@@ -49,6 +55,7 @@ export default {
         isAdd: true
       };
       this.updateCart(order);
+      console.log(this.item["key"]);
     }
   },
   filters: {
@@ -85,14 +92,17 @@ div.card {
   transform: scale(1.1);
 }
 
+.picVoteCount {
+  color: purple;
+  font-size: 24px;
+  margin-left: 20px;
+}
+
 .list-group-item {
-  float: none;
-  width: 100%;
   background-color: #fff;
   margin-bottom: 30px;
   -ms-flex: 0 0 100%;
   flex: 0 0 100%;
-  max-width: 100%;
   padding: 0 1rem;
   border: 0;
   .thumbnail {
@@ -100,7 +110,7 @@ div.card {
     width: 100%;
   }
   .img-event {
-    width: 20%;
+    width: 100%;
     float: left;
     padding: 0 !important;
     margin: 0;
@@ -113,7 +123,7 @@ div.card {
 
   .card-body {
     float: left;
-    width: 80%;
+    width: 100%;
     margin: 0;
   }
 
@@ -129,6 +139,10 @@ div.card {
       float: left;
       width: 35%;
       margin: 0;
+    }
+
+    .picVoteCount {
+      margin-top: 40px;
     }
   }
 }

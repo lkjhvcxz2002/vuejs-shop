@@ -44,6 +44,10 @@
 </script>
 
 <style>
+  * {
+    font-family: 'Microsoft JhengHei';
+  }
+
   #reset-store-panel {
     position: fixed; bottom: 0px; right: 0px;
   }

@@ -3,18 +3,8 @@
   <div class="row text-center" v-if="isProductLoading">
     <grid-loader :loading="isProductLoading" :color="loaderColor" :size="loaderSize"></grid-loader>
   </div>
-  <div v-else class="row action-panel">
-    <div class="col-12">
-      <div class="btn-group btn-group-sm pull-right">
-				<button id="list" class="btn btn-outline-dark" @click.prevent="changeDisplay(true)">
-          <i class="fa fa-list" aria-hidden="true"></i> List
-				</button>
-				<button id="grid" class="btn btn-outline-dark" @click.prevent="changeDisplay(false)">
-          <i class="fa fa-th" aria-hidden="true"></i> Grid
-				</button>
-      </div>
-    </div>
-  </div>
+
+      <filter-bar></filter-bar>
 
   <div class="row" v-if="!isProductLoading">
     <app-product-item v-for="prod in products" :item="prod" :key="prod.id" :displayList="displayList"></app-product-item>
@@ -28,22 +18,24 @@ import pJson from '../../data/simIdols.json'
 import ProductItem from './product/ProductItem.vue';
 import GridLoader from 'vue-spinner/src/GridLoader.vue';
 import shuffle from './helper/shuffle';
+import FilterBar from './product/FilterBar'
 
 let indexArr = [1, 2];
 let jsonArr = [];
-let counter = 0;
 pJson.forEach((element) => {
   if(element["name"]) {
     indexArr.forEach((num) => {
       let imageK = "pic" + num;
-      jsonArr.push({
-        "id" : ++counter,
-        "key": element["id"].toString() + num.toString(),
-        "name": element["name"],
-        "fb": element["fb"],
-        "group": element["group"],
-        "pic": element[imageK]
-      });
+      if(element[imageK]) {
+        jsonArr.push({
+          "id" : element["id"],
+          "key": element["id"].toString() + num.toString(),
+          "name": element["name"],
+          "fb": element["fb"],
+          "group": element["Group"],
+          "pic": element[imageK]
+        });
+      }
     })
   }
 });
@@ -61,16 +53,23 @@ export default {
   },
   components: {
     appProductItem: ProductItem,
-    GridLoader
+    GridLoader,
+    'filter-bar': FilterBar
   },  
   mounted() {
     setTimeout(() =>{
-      this.products = jsonArr;
+      let targetId = this.$route.query.id;
+      if(!targetId) this.products = jsonArr
+      else this.products = jsonArr.filter(o => o.id == targetId);
     }, 500)
+    this.$events.$on('filter-set', eventData => this.onFilterSet(eventData));
   },
   methods: {
     changeDisplay(isList) {
       this.displayList = isList;
+    },onFilterSet (filterText) {
+      if(filterText) this.products = jsonArr.filter(o => o.name.toLowerCase().indexOf(filterText) != -1);
+      else this.products = jsonArr;
     }
   }
 }

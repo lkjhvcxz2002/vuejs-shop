@@ -22,7 +22,7 @@
       </ul>
       <ul class="nav navbar-nav">
         <router-link to="/login" tag="li" v-if="!isLoggedIn" class="nav-item" active-class="active">
-          <a class="nav-link">報名列表</a>
+          <a class="nav-link">參加者列表</a>
         </router-link>
         <li v-if="isLoggedIn" class="li-pointer nav-item">
           <a @click="logout" class="nav-link">Logout {{ userEmail }}</a>

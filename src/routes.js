@@ -6,6 +6,7 @@ import Register from './components/auth/Register.vue';
 
 export const routes = [
 	{path: '/', component: Store, name: 'mainpage'},
+	{path: '/main', component: Store, name: 'main'},
 	{path: '/product/:id', component: ProductDetails, name: 'product'},
 	{path: '/cart', component: ShoppingCart, name: 'shoppingcart'},
 	{path: '/list', component: IdolList, name: 'list' },
