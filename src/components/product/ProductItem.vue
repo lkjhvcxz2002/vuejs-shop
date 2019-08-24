@@ -1,5 +1,5 @@
 <template>
-<div class="mb-3 col-sm-6 col-md-4 item" :class="{'list-group-item': displayList}">
+<div class="col-sm-5 col-md-4" :class="{'list-group-item': displayList}">
   <div class="thumbnail card">
     <div class="img-event intrinsic">
       <VuePureLightbox class="thumbnail-image card-img-top intrinsic-item p-3"
@@ -8,13 +8,13 @@
         />
     </div>
     <div class="card-body">
-      <router-link :to="'/product/' + item.id" tag="h5" class="card-title"><a>{{ item.title }}</a></router-link>
-      <h6 class="card-subtitle mb-2 remain">{{ item.quantity }} left in stock</h6>
-
-      <p class="card-text truncate">{{ item.description | shortDescription}}</p>
-
+      <router-link :to="'/product/' + item.id" tag="h5" class="card-title"><a>{{ item.name }}</a></router-link>
+      <h6 class="card-subtitle mb-2 remain">
+        <a :href="item.fb" target="_blank" style="color: #0054d6" v-if="item.fb">臉書連結</a>
+      </h6>
+      <div class="row" style="height: 70px;"></div>
       <div class="row">
-        <p class="col-6 lead">{{ item.Name }}</p>
+        <p class="col-6 lead"></p>
         <p class="col-6">
           <button class="btn btn-success pull-right" :disabled="item.quantity === 0" @click="addItem">
             <v-icon name="plus"/>
@@ -119,7 +119,7 @@ div.card {
 
   @media (max-width: 767.98px) {
     .img-event {
-      width: 30%;
+      width: 65%;
       float: left;
       padding: 0 !important;
       margin: 0;
@@ -127,7 +127,7 @@ div.card {
 
     .card-body {
       float: left;
-      width: 70%;
+      width: 35%;
       margin: 0;
     }
   }

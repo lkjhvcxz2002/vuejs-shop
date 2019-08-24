@@ -15,9 +15,6 @@
 </template>
 
 <script>
-import {
-  mapActions, mapGetters
-} from 'vuex';
 import Icon from 'vue-awesome'
 import VuePureLightbox from 'vue-pure-lightbox'
 
@@ -65,7 +62,6 @@ export default {
   mounted() {
   },
   methods: {
-    ...mapActions(['updateCart']),
     addItem() {
       const order = {
         item: Object.assign({}, this.item),
@@ -79,10 +75,9 @@ export default {
         window.open(detailUrl, "_blank");
     },
     toRegister() {
-        window.confirm("報名前請先確認閱讀過活動細節~", function() {
-            let registerUrl ="https://docs.google.com/forms/d/1LRwxeKCBumzFuQ-lOlxYJbMdBCvSSB2EbgV_WDJshiw/edit";
-            window.open(registerUrl, "_blank");
-        }, function(){}) ;
+        var ret = window.confirm("報名前請先確認閱讀過活動細節~") ;
+        if(ret == true) {let registerUrl ="https://docs.google.com/forms/d/1LRwxeKCBumzFuQ-lOlxYJbMdBCvSSB2EbgV_WDJshiw/edit";
+            window.open(registerUrl, "_blank");}
     }
   },
   filters: {

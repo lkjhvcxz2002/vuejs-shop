@@ -24,24 +24,49 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import pJson from '../../data/simIdols.json'
 import ProductItem from './product/ProductItem.vue';
 import GridLoader from 'vue-spinner/src/GridLoader.vue';
+import shuffle from './helper/shuffle';
+
+let indexArr = [1, 2];
+let jsonArr = [];
+let counter = 0;
+pJson.forEach((element) => {
+  if(element["name"]) {
+    indexArr.forEach((num) => {
+      let imageK = "pic" + num;
+      jsonArr.push({
+        "id" : ++counter,
+        "key": element["id"].toString() + num.toString(),
+        "name": element["name"],
+        "fb": element["fb"],
+        "group": element["group"],
+        "pic": element[imageK]
+      });
+    })
+  }
+});
+
+jsonArr = shuffle(jsonArr);
 
 export default {
   data() {
     return {
       loaderColor: "#5cb85c",
       loaderSize: "50px",
-      displayList: false
+      displayList: true,
+      products: []
     }
-  },
-  computed: {
-    ...mapGetters(['products', 'isProductLoading']),
   },
   components: {
     appProductItem: ProductItem,
     GridLoader
+  },  
+  mounted() {
+    setTimeout(() =>{
+      this.products = jsonArr;
+    }, 500)
   },
   methods: {
     changeDisplay(isList) {
