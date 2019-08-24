@@ -22,8 +22,10 @@ app.get('*', function (req, res) {
 });
 
 // 监听
-app.listen(3000, function () {
-  console.log('success listen...3000');
+var port = normalizePort(process.env.PORT || '3000');
+app.set('port', port);
+app.listen(port, function () {
+  console.log('success listen...' + port);
 });
 
 module.exports = app;
