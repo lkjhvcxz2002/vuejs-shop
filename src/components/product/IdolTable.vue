@@ -15,9 +15,6 @@
 </template>
 
 <script>
-import Icon from 'vue-awesome'
-import VuePureLightbox from 'vue-pure-lightbox'
-
 import Vuetable from 'vuetable-2'
 import FilterBar from './FilterBar'
 
@@ -53,8 +50,6 @@ export default {
         }
     },
   components: {
-    'v-icon': Icon,
-    'VuePureLightbox': VuePureLightbox,
     Vuetable,
     'filter-bar': FilterBar,
   },
