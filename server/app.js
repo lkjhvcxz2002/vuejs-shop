@@ -41,7 +41,7 @@ app.get('/*', function (req, res) {
 });
 
 // 监听
-var port = '3001';
+var port = '3000';
 app.set('port', port);
 app.listen(port, function () {
   console.log('success listen...' + port);
