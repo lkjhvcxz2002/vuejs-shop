@@ -10,18 +10,24 @@
       <filter-bar></filter-bar>
 
   <div class="row" v-if="!isProductLoading">
-    <app-product-item v-for="prod in products" :item="prod" :key="prod.key" :displayList="displayList"></app-product-item>
+    <app-product-item v-for="prod in products" :item="prod" :key="prod.key" :displayList="displayList" :open="available"></app-product-item>
   </div>
 
 </div>
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 import pJson from '../../data/simIdols.json'
 import ProductItem from './product/ProductItem.vue';
 import GridLoader from 'vue-spinner/src/GridLoader.vue';
 import shuffle from './helper/shuffle';
 import FilterBar from './product/FilterBar'
+import { setTimeout } from 'timers';
+import axios from 'axios';
+import { Promise } from 'q';
+
+const avail = false;
 
 let indexArr = [1, 2];
 let jsonArr = [];
@@ -45,14 +51,6 @@ pJson.forEach((element) => {
 
 jsonArr = shuffle(jsonArr);
 
-let filterLikedArr = function(likeds) {
-  jsonArr.forEach((ele) => {
-    if(likeds.indexOf(ele.key) != -1) {
-      ele.liked = true;
-    } else { ele.liked = false; }
-  });
-}
-
 export default {
   data() {
     return {
@@ -60,35 +58,45 @@ export default {
       loaderSize: "50px",
       displayList: true,
       targetId: "",
+      storeProducts: [],
       products: [],
-      likedList: []
+      likedList: [],
+      available: avail
     }
   },
   components: {
     appProductItem: ProductItem,
     GridLoader,
     'filter-bar': FilterBar
-  },  
+  }, 
   mounted() {
-    setTimeout(() =>{
-      this.targetId = this.$route.query.id;
-      if(!this.targetId) this.products = jsonArr
-      else this.products = jsonArr.filter(o => o.id == this.targetId);
+    // TODO
+    let fbId = "testFB"
+    this.targetId = this.$route.query.id;
+    let url = "/api/getAll" + (this.targetId ? "/" + this.targetId : "");
+    axios.get(url).then(res => {
+      if(res && res.data && res.data.length > 0) {
+        this.storeProducts = shuffle(res.data);
+        this.products = this.storeProducts;
+        this.products.forEach((ele) => {
+          ele.liked = ele.likedList.indexOf(fbId) != -1
+          ele.count = ele.count ? ele.count : 0;
+        })
+      }
+    }).catch(err => {
+      alert("取得資料失敗，請回報主辦單位")
+    })
 
-      this.likedList = ["761","762"];
-      filterLikedArr(this.likedList);
-    }, 500)
     this.$events.$on('filter-set', eventData => this.onFilterSet(eventData));
   },
   methods: {
     changeDisplay(isList) {
       this.displayList = isList;
     },onFilterSet (filterText) {
-      if(filterText) this.products = jsonArr.filter(o => o.name.toLowerCase().indexOf(filterText) != -1);
-      else this.products = jsonArr;
+      if(filterText) this.products = this.storeProducts.filter(o => o.name.toLowerCase().indexOf(filterText) != -1);
+      else this.products = this.storeProducts;
     },seeAll() {
-      this.products = jsonArr;
-      this.targetId = "";
+      location.href = "/main";
     }
   }
 }

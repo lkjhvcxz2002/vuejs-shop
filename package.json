@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "angular-ui-bootstrap": "^2.5.6",
+    "axios": "^0.19.0",
     "bootstrap": "^4.3.1",
     "cookie-parser": "^1.4.4",
     "core-js": "^2.6.5",

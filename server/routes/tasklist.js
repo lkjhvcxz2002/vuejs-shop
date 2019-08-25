@@ -7,9 +7,14 @@ function TaskList(taskDao) {
 
 function getRecordJson() {
     return {
+        "accountId": null,
         "key": null,
         "likedList": [],
-        "count": 0
+        "count": 0,
+        "name": null,
+        "fb": null,
+        "group": null,
+        "pic": null
     }
 }
 
@@ -150,6 +155,49 @@ TaskList.prototype = {
         });
     }, 
 
+    delScore: function(req, res) {
+        var self = this;
+        var key = req.params.key;
+        var fbId = req.params.fbId;
+
+        var querySpec = {
+            query: 'SELECT * FROM root r WHERE r.key=@key',
+            parameters: [{
+                name: '@key',
+                value: key
+            }]
+        };
+
+        self.taskDao.find(querySpec, function (err, items) {
+            // Has record
+            if(items && items.length > 0) {
+                let item = items[0]
+                console.log(JSON.stringify(item))
+                // Already Liked
+                if(item["likedList"].indexOf(fbId.toString()) != -1) {
+                    // Remove like
+                    item["likedList"].splice(item["likedList"].indexOf(fbId.toString()), 1);
+                    item["count"] = --item["count"];
+                    self.taskDao.updateItem(item, function (err) {
+                        if (err) {
+                            callback(err);
+                        } else {
+                            res.send(["Remove like successful"]);    
+                        }
+                    });
+                } 
+                // Not Liked yet
+                else {
+                    res.send(["Not liked yet"]);
+                }
+            } 
+            // No record
+            else {
+                res.send("No record found!");
+            }
+        });
+    },
+
     scoreAll: function(req, res) {
         var self = this;
 
@@ -171,6 +219,79 @@ TaskList.prototype = {
             });
 
             res.send(items);
+        });
+    }, 
+
+    getAll: function(req, res) {
+        var self = this;
+        var id = req.params.id;
+        var querySpec = {};
+        
+        if(id) {
+            var querySpec = {
+                query: 'SELECT * FROM r WHERE r.accountId = @key',
+                parameters: [{
+                    name: '@key',
+                    value: id
+                }]
+            };
+        } else {
+            var querySpec = {
+                query: 'SELECT * FROM r'
+            };
+        }
+
+        self.taskDao.find(querySpec, function (err, items) {
+            if (err) {
+                console.log(JSON.stringify(err));
+                throw (err);
+            }
+
+            res.send(items);
+        });
+    }, 
+
+    updateData: function(req, res) {
+        var self = this;
+        var picArr = [1, 2];
+        var items = req.body;    
+
+        var inserts = []
+        items.forEach((item) => {
+            if(item.name && item.pic1) {
+                picArr.forEach((i) => {
+                    var picName = "pic" + i.toString();
+                    if(item[picName] && item[picName] != null) {
+                        var jsonItem = getRecordJson();
+                        jsonItem["accountId"] = item["id"];
+                        jsonItem["key"] = item["id"] + i.toString();
+                        jsonItem["fb"] = item["fb"];
+                        jsonItem["name"] = item["name"];
+                        jsonItem["pic"] = item[picName];
+                        jsonItem["group"] = item["Group"];
+                        console.log(jsonItem);
+                        
+                        inserts.push(jsonItem);
+                    }
+                })
+            }
+        });
+
+        async.forEach(inserts, function taskIterator(insertItem, callback) {
+            self.taskDao.addItem(insertItem, function (err) {
+                if (err) {
+                    callback(err);
+                } else {
+                    callback(null);
+                }
+            });
+        }, function goHome(err) {
+            if (err) {
+                console.log(err);
+                throw err;
+            } else {
+                res.send("Update Data successful!!");
+            }
         });
     }
 };

@@ -1,8 +1,31 @@
 import { ref, firebaseAuth } from '../config/firebaseConfig';
+import axios from 'axios';
+const http = require("http")
+
+let addScore = function(key, fbId) {
+	var url = "/api/addScore/" + key + "/" + fbId;
+	http.get(url, (res) => {
+		console.log(`Got response: ${res.statusCode}`);
+	}).on('error', (e) => {
+		console.log(`Got error: ${e.message}`);
+	});
+}
+
+let delScore = function(key, fbId) {
+	var url = "/api/delScore/" + key + "/" + fbId;
+	http.get(url, (res) => {
+		console.log(`Got response: ${res.statusCode}`);
+	}).on('error', (e) => {
+		console.log(`Got error: ${e.message}`);
+	});
+}
 
 export const updateCart = ({
   commit
 }, {item, isAdd}) => {
+	// TODO
+	var fbId = "testFB";
+
   // TODO: Call service
 	commit('UPDATE_CART', {item, isAdd});
 	let message_obj = {};
@@ -11,13 +34,17 @@ export const updateCart = ({
       message: `你喜歡 ${item.name} 的照片!!`,
       messageClass: "success",
       autoClose: true
-    }
+		}
+
+		addScore(item.key, fbId);
   } else {
 		message_obj = {
 			message: `你取消喜歡 ${item.name} 的照片!!`,
       messageClass: "danger",
       autoClose: true
-    }
+		}
+		
+		delScore(item.key, fbId);
 	}
 	commit('ADD_MESSAGE', message_obj);
 }

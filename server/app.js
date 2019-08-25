@@ -29,7 +29,11 @@ taskDao.init();
 // api
 app.get('/api/getScore/:fbId', taskList.getScore.bind(taskList));
 app.get('/api/addScore/:key/:fbId', taskList.addScore.bind(taskList));
+app.get('/api/delScore/:key/:fbId', taskList.delScore.bind(taskList));
 app.get('/api/scoreAll', taskList.scoreAll.bind(taskList));
+app.post('/api/updateData', taskList.updateData.bind(taskList))
+app.get('/api/getAll', taskList.getAll.bind(taskList));
+app.get('/api/getAll/:id', taskList.getAll.bind(taskList));
 
 // 访问静态资源
 app.use(express.static(path.resolve(__dirname, '../dist')));

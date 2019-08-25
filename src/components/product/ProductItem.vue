@@ -17,21 +17,21 @@
       <div class="row" style="height: 40px;">
         <p class="col-12 lead">投稿組別: {{item.group}}</p>
       </div>
-      <div class="row">
+      <div class="row" v-if="open">
         <p class="col-6"></p>
         <p class="col-6">
-          <button class="btn btn-success pull-right" :disabled="item.quantity === 0" @click="addItem" v-if="item.liked == false">
+          <button class="btn btn-success pull-right" :disabled="item.quantity === 0" @click="addItem" v-if="!liked">
             <v-icon name="plus"/>
             我喜歡
           </button>
-          <button class="btn btn-danger pull-right" :disabled="item.quantity === 0" @click="delItem" v-if="item.liked == true">
+          <button class="btn btn-danger pull-right" :disabled="item.quantity === 0" @click="delItem" v-if="liked == true">
             <v-icon name="heart"/>
             已喜歡
           </button>
         </p>
       </div>
-      <div class="row">
-        <h2 class="picVoteCount">已經獲得 {{item.count}} 票</h2>
+      <div class="row" v-if="open">
+        <h2 class="picVoteCount">已經獲得 {{count}} 票</h2>
       </div>
     </div>
   </div>
@@ -50,12 +50,18 @@ export default {
     'v-icon': Icon,
     'VuePureLightbox': VuePureLightbox
   },
-  props: ['item', 'displayList'],
+  data() {
+    return {
+      liked: this.item.liked,
+      count: this.item.count
+    }
+  },
+  props: ['item', 'displayList', 'open'],
   methods: {
     ...mapActions(['updateCart']),
     addItem() {
-      this.item.liked = true;
-
+      this.liked = true;
+      this.count++;
       const order = {
         item: Object.assign({}, this.item),
         isAdd: true
@@ -64,6 +70,8 @@ export default {
       console.log(this.item["key"]);
     },
     delItem() {
+      this.liked = false;
+      this.count--;
       const order = {
         item: Object.assign({}, this.item),
         isAdd: false
