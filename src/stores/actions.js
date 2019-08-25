@@ -2,17 +2,24 @@ import { ref, firebaseAuth } from '../config/firebaseConfig';
 
 export const updateCart = ({
   commit
-}, {item, quantity, isAdd}) => {
+}, {item, isAdd}) => {
   // TODO: Call service
-  commit('UPDATE_CART', {item, quantity, isAdd});
+	commit('UPDATE_CART', {item, isAdd});
+	let message_obj = {};
   if (isAdd) {
-    let message_obj = {
+    message_obj = {
       message: `你喜歡 ${item.name} 的照片!!`,
       messageClass: "success",
       autoClose: true
     }
-    commit('ADD_MESSAGE', message_obj);
-  }
+  } else {
+		message_obj = {
+			message: `你取消喜歡 ${item.name} 的照片!!`,
+      messageClass: "danger",
+      autoClose: true
+    }
+	}
+	commit('ADD_MESSAGE', message_obj);
 }
 
 export const removeItemInCart = ({commit}, {item}) => {

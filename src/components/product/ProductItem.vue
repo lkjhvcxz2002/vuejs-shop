@@ -20,9 +20,13 @@
       <div class="row">
         <p class="col-6"></p>
         <p class="col-6">
-          <button class="btn btn-success pull-right" :disabled="item.quantity === 0" @click="addItem">
+          <button class="btn btn-success pull-right" :disabled="item.quantity === 0" @click="addItem" v-if="item.liked == false">
             <v-icon name="plus"/>
             我喜歡
+          </button>
+          <button class="btn btn-danger pull-right" :disabled="item.quantity === 0" @click="delItem" v-if="item.liked == true">
+            <v-icon name="heart"/>
+            已喜歡
           </button>
         </p>
       </div>
@@ -50,13 +54,21 @@ export default {
   methods: {
     ...mapActions(['updateCart']),
     addItem() {
+      this.item.liked = true;
+
       const order = {
         item: Object.assign({}, this.item),
-        quantity: 1,
         isAdd: true
       };
       this.updateCart(order);
       console.log(this.item["key"]);
+    },
+    delItem() {
+      const order = {
+        item: Object.assign({}, this.item),
+        isAdd: false
+      };
+      this.updateCart(order);
     }
   },
   filters: {

@@ -62,14 +62,6 @@ export default {
   mounted() {
   },
   methods: {
-    addItem() {
-      const order = {
-        item: Object.assign({}, this.item),
-        quantity: 1,
-        isAdd: true
-      };
-      this.updateCart(order);
-    },
     toDetail() {
         let detailUrl = "https://docs.google.com/document/d/1xwfDpqRQRX6Q4Hze4SVLbhuNQF4K1Z0rl30cIk2Cb7c/edit?usp=sharing";
         window.open(detailUrl, "_blank");

@@ -4,6 +4,9 @@
     <grid-loader :loading="isProductLoading" :color="loaderColor" :size="loaderSize"></grid-loader>
   </div>
 
+  <div class="ui">
+      <button class="ui small primary button right floated" style="margin-top:15px" v-on:click="seeAll()" v-if="targetId">查看全部</button>
+  </div>
       <filter-bar></filter-bar>
 
   <div class="row" v-if="!isProductLoading">
@@ -42,13 +45,23 @@ pJson.forEach((element) => {
 
 jsonArr = shuffle(jsonArr);
 
+let filterLikedArr = function(likeds) {
+  jsonArr.forEach((ele) => {
+    if(likeds.indexOf(ele.key) != -1) {
+      ele.liked = true;
+    } else { ele.liked = false; }
+  });
+}
+
 export default {
   data() {
     return {
       loaderColor: "#5cb85c",
       loaderSize: "50px",
       displayList: true,
-      products: []
+      targetId: "",
+      products: [],
+      likedList: []
     }
   },
   components: {
@@ -58,9 +71,12 @@ export default {
   },  
   mounted() {
     setTimeout(() =>{
-      let targetId = this.$route.query.id;
-      if(!targetId) this.products = jsonArr
-      else this.products = jsonArr.filter(o => o.id == targetId);
+      this.targetId = this.$route.query.id;
+      if(!this.targetId) this.products = jsonArr
+      else this.products = jsonArr.filter(o => o.id == this.targetId);
+
+      this.likedList = ["761","762"];
+      filterLikedArr(this.likedList);
     }, 500)
     this.$events.$on('filter-set', eventData => this.onFilterSet(eventData));
   },
@@ -70,6 +86,9 @@ export default {
     },onFilterSet (filterText) {
       if(filterText) this.products = jsonArr.filter(o => o.name.toLowerCase().indexOf(filterText) != -1);
       else this.products = jsonArr;
+    },seeAll() {
+      this.products = jsonArr;
+      this.targetId = "";
     }
   }
 }
