@@ -2,29 +2,15 @@
   <div class="row">
     <div class="col-md-6 offset-md-3 col-sm-10 offset-sm-1">
      <form id="register-form" role="form">
-        <h3 class="text-center">Register</h3>
-        <div class="form-group">
-          <input type="email" name="email" id="email" class="form-control" placeholder="Email Address" value=""
-          v-model="email">
-        </div>
-        <div class="form-group">
-          <input type="password" name="password" id="password" class="form-control" placeholder="Password"
-          v-model="password">
-        </div>
-        <div class="form-group">
-            <button class="btn btn-success" style="width: 100%" @click.prevent="registerByEmailLocal" :disabled="isLoading">
+        <h3 class="text-center">Facebook登入</h3>
+        <div class="form-group" style="height: 100px"></div>
+        <div class="form-group" style="text-align: center">
+            <!-- <button class="btn btn-success" style="width: 100%" @click="FBLogin" :disabled="isLoading">
               <i v-if="isLoading" class="fa fa-spinner fa-spin" />
               Register
-            </button>
-        </div>
-        <div class="form-group">
-          <div class="row">
-            <div class="col-lg-12">
-              <div class="text-center">
-                <router-link to="/login"><a>Login</a></router-link>
-              </div>
-            </div>
-          </div>
+            </button> -->
+            <div class="fb-login-button" data-width="" data-size="large" data-button-type="continue_with" @click="FBLogin"
+               data-auto-logout-link="false" data-use-continue-as="false"></div>
         </div>
       </form>
     </div>
@@ -43,27 +29,25 @@
     },
     methods: {
        ...mapActions(['clearMessage', 'addMessage', 'registerByEmail']),
-      registerByEmailLocal() {
-        this.isLoading = true
-        let data = {
-          email: this.email,
-          password: this.password
-        }
-        this.registerByEmail(data).then(() => {
-          this.clearMessage();
-          this.$router.push({name: 'mainpage'});
-        })
-        .catch((error) => {
-          // console.log('register error', error);
-          let message_obj = {
-              message: error.message,
-              messageClass: "danger",
-              autoClose: true
+      FBLogin() {
+        FB.getLoginStatus(function(response) {
+            console.log(response);
+            let fbId = "testFB";
+            if(response.status == "connected") {
+              let authResponse = response.authResponse;
+              console.log(authResponse);
+              fbId = authResponse.userID;
+            } else {
+              alert("請先登入FB~ 否則無法投票喔")
             }
-           this.addMessage(message_obj);
-        }).then(() => {
-          this.isLoading = false
-        })
+
+            this.$cookies.config('14d');
+            this.$cookies.set("fbId", fbId);
+
+            if (fbId) {
+              location.href = "/main"
+            }
+        });  
       }
     }
   }

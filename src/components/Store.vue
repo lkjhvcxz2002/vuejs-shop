@@ -81,7 +81,8 @@ export default {
   }, 
   mounted() {
     // TODO
-    let fbId = "testFB"
+    let fbId = this.$cookies.get("fbId");
+    console.log("FB ID is : " + JSON.stringify(fbId));
     this.targetId = this.$route.query.id;
     let url = "/api/getAll" + (this.targetId ? "/" + this.targetId : "");
     axios.get(url).then(res => {

@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import VueEvents from 'vue-events'
+import VueCookies from 'vue-cookies'
 
 import { routes } from './routes';
 import store from './stores/store';
@@ -11,7 +12,7 @@ import App from './App.vue';
 
 Vue.use(VueRouter);
 Vue.use(VueEvents);
-
+Vue.use(VueCookies)
 
 firebaseListener(authStatusChange);
 
