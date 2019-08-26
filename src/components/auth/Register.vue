@@ -22,7 +22,6 @@
 
   function statusChangeCallback(response) {
     console.log(response);
-    html = "";
 
     // 登入 FB 且已加入會員
     if (response.status === 'connected') {
@@ -67,47 +66,4 @@
       }
     }
   }
-
-
-
-
-  FB.getLoginStatus(function(response) {
-statusChangeCallback(response);
-});
-};
-
-// 處理各種登入身份
-function statusChangeCallback(response) {
-console.log(response);
-var target = document.getElementById("FB_STATUS_1"),
-html = "";
-
-// 登入 FB 且已加入會員
-if (response.status === 'connected') {
-html = "已登入 FB，並加入 WFU BLOG DEMO 應用程式<br/>";
-
-FB.api('/me?fields=id,name,email', function(response) {
-console.log(response);
-html += "會員暱稱：" + response.name + "<br/>";
-html += "會員 email：" + response.email;
-target.innerHTML = html;
-});
-}
-
-// 登入 FB, 未偵測到加入會員
-else if (response.status === "not_authorized") {
-target.innerHTML = "已登入 FB，但未加入 WFU BLOG DEMO 應用程式";
-}
-
-// 未登入 FB
-else {
-target.innerHTML = "未登入 FB";
-}
-}
-
-function checkLoginState() {
-FB.getLoginStatus(function(response) {
-statusChangeCallback(response);
-});
-}
 </script>
