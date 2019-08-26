@@ -4,10 +4,19 @@
     <grid-loader :loading="isProductLoading" :color="loaderColor" :size="loaderSize"></grid-loader>
   </div>
 
+  <!-- Sort by -->
+  <div class="row">
+    <div class="col-md-4 col-md-offset-4 btn-group btn-group-toggle">
+      <button type="radio" class="btn btn-secondary active" v-on:click="sortByRandom()">隨機排序</button>
+      <button type="radio" class="btn btn-secondary" v-on:click="sortByCount()">人氣排序</button>
+    </div>
+  </div>
+
+  <!-- Filter & See All -->
   <div class="ui">
       <button class="ui small primary button right floated" style="margin-top:15px" v-on:click="seeAll()" v-if="targetId">查看全部</button>
   </div>
-      <filter-bar></filter-bar>
+  <filter-bar v-if="!targetId"></filter-bar>
 
   <div class="row" v-if="!isProductLoading">
     <app-product-item v-for="prod in products" :item="prod" :key="prod.key" :displayList="displayList" :open="available"></app-product-item>
@@ -17,15 +26,12 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
 import pJson from '../../data/simIdols.json'
 import ProductItem from './product/ProductItem.vue';
 import GridLoader from 'vue-spinner/src/GridLoader.vue';
 import shuffle from './helper/shuffle';
 import FilterBar from './product/FilterBar'
-import { setTimeout } from 'timers';
 import axios from 'axios';
-import { Promise } from 'q';
 
 const avail = false;
 
@@ -84,7 +90,9 @@ export default {
         })
       }
     }).catch(err => {
-      alert("取得資料失敗，請回報主辦單位")
+      this.storeProducts = jsonArr;
+      this.products = jsonArr;
+      alert("取得資料失敗，請回報主辦單位: " + err)
     })
 
     this.$events.$on('filter-set', eventData => this.onFilterSet(eventData));
@@ -97,6 +105,10 @@ export default {
       else this.products = this.storeProducts;
     },seeAll() {
       location.href = "/main";
+    },sortByRandom() {
+      this.products = shuffle(this.products);
+    },sortByCount() {
+      this.products.sort((a, b) => {return a.count - b.count})
     }
   }
 }

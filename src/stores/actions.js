@@ -1,5 +1,4 @@
 import { ref, firebaseAuth } from '../config/firebaseConfig';
-import axios from 'axios';
 const http = require("http")
 
 let addScore = function(key, fbId) {
