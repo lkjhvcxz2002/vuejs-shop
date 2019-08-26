@@ -22,10 +22,10 @@
         <router-link to="/list" tag="li" v-if="!isLoggedIn" class="nav-item" active-class="active">
           <a class="nav-link">參加者列表</a>
         </router-link>
-        <li v-on:click="toDetail()" tag="li" v-if="!isLoggedIn" class="nav-item" active-class="active">
+        <li v-on:click="toDetail()" tag="li" v-if="!isLoggedIn" style="cursor:pointer" class="nav-item" active-class="active">
           <a class="nav-link">活動細節</a>
         </li>
-        <li v-on:click="toRegister()" tag="li" v-if="!isLoggedIn" class="nav-item" active-class="active">
+        <li v-on:click="toRegister()" tag="li" v-if="!isLoggedIn" style="cursor:pointer" class="nav-item" active-class="active">
           <a class="nav-link">報名參加</a>
         </li>
         <!-- <router-link to="/main" tag="li" v-if="!isLoggedIn" class="nav-item" disabled>
