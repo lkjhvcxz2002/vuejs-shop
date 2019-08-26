@@ -1,9 +1,7 @@
 <template>
-<nav class="navbar navbar-expand-sm navbar-dark bg-dark" role="navigation">
+<nav class="navbar navbar-expand-sm navbar-dark bg-pink" role="navigation">
   <div class="container">
-    <!-- Brand and toggle get grouped for better mobile display -->
-    <!-- <router-link to="/" class="navbar-brand mr-auto">2020 偽娘桌曆徵選 </router-link> -->
-    <router-link to="/list" class="navbar-brand mr-auto webTitle">2020 偽娘桌曆徵選 </router-link>
+    <router-link to="/" class="navbar-brand mr-auto webTitle">2020 偽娘桌曆徵選 </router-link>
     <button
         class="navbar-toggler"
         type="button"
@@ -24,8 +22,11 @@
         <router-link to="/list" tag="li" v-if="!isLoggedIn" class="nav-item" active-class="active">
           <a class="nav-link">參加者列表</a>
         </router-link>
-        <li v-if="isLoggedIn" class="li-pointer nav-item">
-          <a @click="logout" class="nav-link">Logout {{ userEmail }}</a>
+        <li v-on:click="toDetail()" tag="li" v-if="!isLoggedIn" class="nav-item" active-class="active">
+          <a class="nav-link">活動細節</a>
+        </li>
+        <li v-on:click="toRegister()" tag="li" v-if="!isLoggedIn" class="nav-item" active-class="active">
+          <a class="nav-link">報名參加</a>
         </li>
         <!-- <router-link to="/main" tag="li" v-if="!isLoggedIn" class="nav-item" disabled>
           <a class="nav-link">投票(09/01開放)</a>
@@ -66,6 +67,15 @@ export default {
     ...mapActions(['logout']),
     toggleNavbar() {
       this.isNavOpen = !this.isNavOpen
+    },    
+    toDetail() {
+        let detailUrl = "https://docs.google.com/document/d/1xwfDpqRQRX6Q4Hze4SVLbhuNQF4K1Z0rl30cIk2Cb7c/edit?usp=sharing";
+        window.open(detailUrl, "_blank");
+    },
+    toRegister() {
+        var ret = window.confirm("報名前請先確認閱讀過活動細節~") ;
+        if(ret == true) {let registerUrl ="https://docs.google.com/forms/d/1LRwxeKCBumzFuQ-lOlxYJbMdBCvSSB2EbgV_WDJshiw/edit";
+            window.open(registerUrl, "_blank");}
     }
   }
 }
@@ -88,5 +98,14 @@ export default {
 .webTitle {
   font-size: 18pt;
   font-size: bold;
+}
+
+.bg-pink {
+  background-color: rgba(243, 103, 131, 0.753);
+}
+
+.nav-link {
+  font-size: 16px;
+  padding-left: 20px;
 }
 </style>

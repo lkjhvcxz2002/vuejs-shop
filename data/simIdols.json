@@ -75,6 +75,7 @@
     "id": "10",
     "name": "邱超超/Chiu Chao Chao",
     "fb": "https://www.facebook.com/winnie.cdbaby",
+    "Group": "日常生活組",
     "pic1": "https://i.imgur.com/wc74wnP.jpg",
     "pic2": "https://i.imgur.com/1u2wE9V.jpg"
   },
@@ -286,7 +287,7 @@
   {
     "id": "37",
     "name": "艾諾",
-    "fb": "https://www.facebook.com/kanakaoru",
+    "fb": "https://www.facebook.com/KannaKaoru/",
     "Group": "Cosplay/寫真/沙龍照組",
     "pic1": "https://i.imgur.com/tPAuwU9.jpg",
     "pic2": "https://i.imgur.com/85uITpp.jpg"
@@ -602,105 +603,92 @@
   {
     "id": "78",
     "name": "Amy",
-    "fb": "https://www.facebook.com/SabinaAmy",
+    "fb": "http://fb.com/1iclke",
     "Group": "Cosplay/寫真/沙龍照組",
     "pic1": "https://i.imgur.com/4foXosF.jpg",
     "pic2": "https://i.imgur.com/oiNj3Md.jpg"
   },
   {
-    "id": "79"
+    "id": "79",
+    "name": "小美",
+    "Group": "Cosplay/寫真/沙龍照組",
+    "pic1": "https://i.imgur.com/4rXnrSQ.jpg"
   },
   {
-    "id": "80"
+    "id": "80",
+    "name": "布雷德",
+    "fb": "https://www.facebook.com/braid117/",
+    "Group": "Cosplay/寫真/沙龍照組",
+    "pic1": "https://i.imgur.com/haoXyeW.jpg",
+    "pic2": "https://i.imgur.com/OhtuyAW.jpg"
   },
   {
-    "id": "81"
+    "id": "81",
+    "name": "子暈冰箱",
+    "fb": "https://www.facebook.com/profile.php?id=100002571515529",
+    "Group": "Cosplay/寫真/沙龍照組",
+    "pic1": "https://i.imgur.com/N3cAYhV.jpg",
+    "pic2": "https://i.imgur.com/qptaZE4.jpg"
   },
   {
-    "id": "82"
+    "id": "82",
+    "name": "EF",
+    "Group": "Cosplay/寫真/沙龍照組",
+    "pic1": "https://i.imgur.com/K2wO8Ja.jpg"
   },
   {
-    "id": "83"
+    "id": "83",
+    "name": "翔",
+    "fb": "https://www.facebook.com/yanyanyuu",
+    "Group": "Cosplay/寫真/沙龍照組",
+    "pic1": "https://i.imgur.com/CpNDE3q.jpg",
+    "pic2": "https://i.imgur.com/nxhS0w0.jpg"
   },
   {
-    "id": "84"
+    "id": "84",
+    "name": "魚魚",
+    "fb": "https://www.facebook.com/NINJABONBON",
+    "Group": "Cosplay/寫真/沙龍照組",
+    "pic1": "https://i.imgur.com/nnF3XGL.jpg",
+    "pic2": "https://i.imgur.com/AnukQQ0.jpg"
   },
   {
-    "id": "85"
+    "id": "85",
+    "name": "太乃",
+    "fb": "https://www.facebook.com/TaiNaiValentine",
+    "Group": "Cosplay/寫真/沙龍照組",
+    "pic1": "https://i.imgur.com/Ra6ny7L.jpg",
+    "pic2": "https://i.imgur.com/tFymyug.jpg"
   },
   {
-    "id": "86"
+    "id": "86",
+    "name": "雅典娜",
+    "fb": "https://www.facebook.com/profile.php?id=100008720236576",
+    "Group": "Cosplay/寫真/沙龍照組",
+    "pic1": "https://i.imgur.com/yrt1leI.jpg",
+    "pic2": "https://i.imgur.com/2iNKd5k.jpg"
   },
   {
-    "id": "87"
+    "id": "87",
+    "name": "綠華",
+    "fb": "https://www.facebook.com/Kuuhara.Ruka",
+    "Group": "Cosplay/寫真/沙龍照組",
+    "pic1": "https://i.imgur.com/veaMO4D.jpg",
+    "pic2": "https://i.imgur.com/9pQ1RNx.jpg"
   },
   {
-    "id": "88"
+    "id": "88",
+    "name": "小尹",
+    "fb": "https://www.facebook.com/allan.wang.562",
+    "Group": "Cosplay/寫真/沙龍照組",
+    "pic1": "https://i.imgur.com/2spshy9.jpg"
   },
   {
-    "id": "89"
-  },
-  {
-    "id": "90"
-  },
-  {
-    "id": "91"
-  },
-  {
-    "id": "92"
-  },
-  {
-    "id": "93"
-  },
-  {
-    "id": "94"
-  },
-  {
-    "id": "95"
-  },
-  {
-    "id": "96"
-  },
-  {
-    "id": "97"
-  },
-  {
-    "id": "98"
-  },
-  {
-    "id": "99"
-  },
-  {
-    "id": "100"
-  },
-  {
-    "id": "101"
-  },
-  {
-    "id": "102"
-  },
-  {
-    "id": "103"
-  },
-  {
-    "id": "104"
-  },
-  {
-    "id": "105"
-  },
-  {
-    "id": "106"
-  },
-  {
-    "id": "107"
-  },
-  {
-    "id": "108"
-  },
-  {
-    "id": "109"
-  },
-  {
-    "id": "110"
+    "id": "89",
+    "name": "林允彤",
+    "fb": "https://www.facebook.com/profile.php?id=100007360022728",
+    "Group": "日常生活組",
+    "pic1": "https://i.imgur.com/eK4usgr.jpg",
+    "pic2": "https://i.imgur.com/Mu7Z84Y.jpg"
   }
 ]

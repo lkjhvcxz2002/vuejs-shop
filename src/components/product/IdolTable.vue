@@ -1,9 +1,5 @@
 <template>
 <div >
-    <div class="ui">
-        <button class="ui small primary button right floated" v-on:click="toRegister()">報名參加</button>
-        <button class="ui small positive button right floated" v-on:click="toDetail()">活動細節</button>
-    </div>
   <filter-bar></filter-bar>
   <Vuetable ref="vuetable"
     :data="displayList"
@@ -29,12 +25,12 @@ let showLink = function(value) {
 };
 
 let fields = [
-  {name: 'id', title: '序號'},  
+  {name: 'accountId', title: '編號'},  
   {name: 'name', title: '姓名'},
   {name: 'fb', title: '臉書網址', callback: showLink},
-  {name: 'Group', title: '報名組別'},
-  {name: 'pic1', title: '照片一', callback: showImage},
-  {name: 'pic2', title: '照片二', callback: showImage},
+  {name: 'group', title: '報名組別'},
+  {name: 'key', title: '照片編號'},
+  {name: 'pic', title: '照片', callback: showImage}
 ]
 
 export default {

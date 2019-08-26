@@ -18,11 +18,11 @@
 </template>
 
 <script>
-import pJson from '../../data/idols.json'
+import pJson from '../../data/simIdols.json'
 import { mapGetters } from 'vuex'
 import idolTable from './product/IdolTable.vue';
 import GridLoader from 'vue-spinner/src/GridLoader.vue';
-import { setTimeout } from 'timers';
+import axios from 'axios';
 
 export default {
   data() {
@@ -30,7 +30,8 @@ export default {
       loaderColor: "#5cb85c",
       loaderSize: "50px",
       filter: "",
-      PPJson: []
+      PPJson: [],
+      storeProducts: []
     }
   },
   computed: {
@@ -41,15 +42,31 @@ export default {
     idolTable
   },
   mounted() {
-    setTimeout(() =>{
+    let fbId = "testFB"
+    this.targetId = this.$route.query.id;
+    let url = "/api/getAll" + (this.targetId ? "/" + this.targetId : "");
+    axios.get(url).then(res => {
+      if(res && res.data && res.data.length > 0) {
+        res.data.sort((a, b) => a.accountId - b.accountId);
+        this.storeProducts = res.data;
+        this.PPJson = this.storeProducts;
+        this.PPJson.forEach((ele) => {
+          ele.liked = ele.likedList.indexOf(fbId) != -1
+          ele.count = ele.count ? ele.count : 0;
+        })
+      }
+    }).catch(err => {
+      this.storeProducts = pJson;
       this.PPJson = pJson;
-    }, 500)
+      alert("取得資料失敗，請回報主辦單位: " + err)
+    })
+
     this.$events.$on('filter-set', eventData => this.onFilterSet(eventData));
   },
   methods: {
     onFilterSet (filterText) {
-      if(filterText) this.PPJson = pJson.filter(o => o.name.toLowerCase().indexOf(filterText) != -1);
-      else this.PPJson = pJson;
+      if(filterText) this.PPJson = this.storeProducts.filter(o => o.name.toLowerCase().indexOf(filterText) != -1);
+      else this.PPJson = this.storeProducts;
     }
   }
 }

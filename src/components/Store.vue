@@ -3,23 +3,25 @@
   <div class="row text-center" v-if="isProductLoading">
     <grid-loader :loading="isProductLoading" :color="loaderColor" :size="loaderSize"></grid-loader>
   </div>
+  <div  v-if="!isProductLoading">
+      <!-- Sort by -->
+      <div class="row" v-if="available">
+        <div class="col-md-4 col-md-offset-4 btn-group btn-group-toggle">
+          <button type="radio" class="btn btn-secondary" :class="{'active': byRandom}" v-on:click="sortByRandom()">隨機排序</button>
+          <button type="radio" class="btn btn-secondary" :class="{'active': !byRandom}" v-on:click="sortByCount()">人氣排序</button>
+        </div>
+      </div>
 
-  <!-- Sort by -->
-  <div class="row">
-    <div class="col-md-4 col-md-offset-4 btn-group btn-group-toggle">
-      <button type="radio" class="btn btn-secondary active" v-on:click="sortByRandom()">隨機排序</button>
-      <button type="radio" class="btn btn-secondary" v-on:click="sortByCount()">人氣排序</button>
-    </div>
-  </div>
+      <!-- Filter & See All -->
+      <div class="ui">
+          <button class="ui small primary button right floated" style="margin-top:15px" v-on:click="seeAll()" v-if="targetId">查看全部</button>
+      </div>
+      <filter-bar v-if="!targetId"></filter-bar>
 
-  <!-- Filter & See All -->
-  <div class="ui">
-      <button class="ui small primary button right floated" style="margin-top:15px" v-on:click="seeAll()" v-if="targetId">查看全部</button>
-  </div>
-  <filter-bar v-if="!targetId"></filter-bar>
+      <div class="row">
+          <app-product-item v-for="prod in products" :item="prod" :key="prod.key" :displayList="displayList" :open="available"></app-product-item>
 
-  <div class="row" v-if="!isProductLoading">
-    <app-product-item v-for="prod in products" :item="prod" :key="prod.key" :displayList="displayList" :open="available"></app-product-item>
+      </div>
   </div>
 
 </div>
@@ -67,7 +69,9 @@ export default {
       storeProducts: [],
       products: [],
       likedList: [],
-      available: avail
+      available: avail,
+      isProductLoading: true,
+      byRandom: true
     }
   },
   components: {
@@ -89,10 +93,13 @@ export default {
           ele.count = ele.count ? ele.count : 0;
         })
       }
+
+      this.isProductLoading = false;
     }).catch(err => {
       this.storeProducts = jsonArr;
       this.products = jsonArr;
       alert("取得資料失敗，請回報主辦單位: " + err)
+      this.isProductLoading = false;
     })
 
     this.$events.$on('filter-set', eventData => this.onFilterSet(eventData));
@@ -106,9 +113,13 @@ export default {
     },seeAll() {
       location.href = "/main";
     },sortByRandom() {
+      this.byRandom = true;
       this.products = shuffle(this.products);
     },sortByCount() {
-      this.products.sort((a, b) => {return a.count - b.count})
+      this.byRandom = false;
+      this.products.sort(function(a, b) {
+        return b["count"] - a["count"];
+      });
     }
   }
 }

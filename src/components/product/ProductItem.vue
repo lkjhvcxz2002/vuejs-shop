@@ -17,6 +17,7 @@
       <div class="row" style="height: 40px;">
         <p class="col-12 lead">投稿組別: {{item.group}}</p>
       </div>
+      <div class="row" style="height: 20px;"></div>
       <div class="row" v-if="open">
         <p class="col-6"></p>
         <p class="col-6">
