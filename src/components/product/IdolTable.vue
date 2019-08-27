@@ -26,7 +26,7 @@ let showLink = function(value) {
 
 let fields = [
   {name: 'accountId', title: '編號'},  
-  {name: 'name', title: '姓名'},
+  {name: 'userName', title: '姓名'},
   {name: 'fb', title: '臉書網址', callback: showLink},
   {name: 'group', title: '報名組別'},
   {name: 'key', title: '照片編號'},
