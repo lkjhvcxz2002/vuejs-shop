@@ -43,14 +43,18 @@ pJson.forEach((element) => {
   if(element["name"]) {
     indexArr.forEach((num) => {
       let imageK = "pic" + num;
+      let thumbK = "thumb" + num;
+      let nameK = "picId" + num;
       if(element[imageK]) {
         jsonArr.push({
           "id" : element["id"],
           "key": element["id"].toString() + num.toString(),
-          "name": element["name"],
+          "userName": element["name"],
           "fb": element["fb"],
           "group": element["Group"],
-          "pic": element[imageK]
+          "pic": element[imageK],
+          "thumb": element[thumbK],
+          "name": element[nameK]
         });
       }
     })
@@ -94,6 +98,7 @@ export default {
         this.products.forEach((ele) => {
           ele.liked = ele.likedList.indexOf(fbId) != -1
           ele.count = ele.count ? ele.count : 0;
+          ele.name = ele.pic;
         })
       }
 

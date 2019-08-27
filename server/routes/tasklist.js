@@ -14,7 +14,8 @@ function getRecordJson() {
         "name": null,
         "fb": null,
         "group": null,
-        "pic": null
+        "pic": null,
+        "thumb": null
     }
 }
 
@@ -106,7 +107,7 @@ TaskList.prototype = {
         var fbId = req.params.fbId;
 
         var querySpec = {
-            query: 'SELECT * FROM root r WHERE r.key=@key',
+            query: 'SELECT * FROM r WHERE r.key=@key',
             parameters: [{
                 name: '@key',
                 value: key
@@ -161,7 +162,7 @@ TaskList.prototype = {
         var fbId = req.params.fbId;
 
         var querySpec = {
-            query: 'SELECT * FROM root r WHERE r.key=@key',
+            query: 'SELECT * FROM r WHERE r.key=@key',
             parameters: [{
                 name: '@key',
                 value: key
@@ -202,7 +203,7 @@ TaskList.prototype = {
         var self = this;
 
         var querySpec = {
-            query: 'SELECT * FROM root r',
+            query: 'SELECT * FROM r',
         };
 
         self.taskDao.find(querySpec, function (err, items) {
@@ -261,13 +262,15 @@ TaskList.prototype = {
             if(item.name && item.pic1) {
                 picArr.forEach((i) => {
                     var picName = "pic" + i.toString();
+                    var thumbName = "thumb" + i.toString();
                     if(item[picName] && item[picName] != null) {
                         var jsonItem = getRecordJson();
                         jsonItem["accountId"] = item["id"];
                         jsonItem["key"] = item["id"] + i.toString();
                         jsonItem["fb"] = item["fb"];
-                        jsonItem["name"] = item["name"];
+                        jsonItem["userName"] = item["name"];
                         jsonItem["pic"] = item[picName];
+                        jsonItem["thumb"] = item[thumbName];
                         jsonItem["group"] = item["Group"];
                         console.log(jsonItem);
                         

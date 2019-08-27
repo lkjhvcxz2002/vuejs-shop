@@ -1,16 +1,26 @@
 <template>
-<div class="col-sm-5 col-md-6" :class="{'list-group-item': displayList}">
+<div class="col-sm-5 col-md-4" :class="{'list-group-item': displayList}">
   <div class="thumbnail card">
     <div class="img-event intrinsic">
       <!-- <img :src="item.pic" class="thumbnail-image card-img-top intrinsic-item p-3" v-if="item.pic.indexOf('?v') != -1"/> -->
-      <VuePureLightbox class="thumbnail-image card-img-top intrinsic-item p-3" v-if="item.pic.indexOf('?v') == -1"
-          :thumbnail="item.pic"
+      <!-- <VuePureLightbox class="thumbnail-image card-img-top intrinsic-item p-3" v-if="item.pic.indexOf('?v') == -1"
+          :thumbnail="item.thumb"
           :images="[item.pic]"
-        />
+        />  -->
+       <img :key="item.key" class="thumbnail-image card-img-top intrinsic-item p-3"
+         @click="showLightbox(item.name)"  
+         :src="item.thumb"  />
+
+        <lightbox :id="'mylightbox'+key" 
+            ref="lightbox"
+            :images="[item]"
+            :directory="thumbnailDir"
+            :timeoutDuration="5000"
+        ></lightbox>
     </div>
 
     <div class="card-body">
-      <h6 class="card-title" style="color: green; font-size: 26px"><a>{{ item.name }}</a></h6>
+      <h6 class="card-title" style="color: green; font-size: 26px"><a>{{ item.userName }}</a></h6>
       <h6 class="card-subtitle mb-2 remain">
         <a :href="item.fb" target="_blank" style="color: #0054d6; font-size: 20px;" v-if="item.fb">臉書連結</a>
       </h6>
@@ -45,16 +55,19 @@ import {
 } from 'vuex';
 import Icon from 'vue-awesome'
 import VuePureLightbox from 'vue-pure-lightbox'
+import Lightbox from 'vue-my-photos'
 
 export default {
   components: {
     'v-icon': Icon,
-    'VuePureLightbox': VuePureLightbox
+    'VuePureLightbox': VuePureLightbox,
+    'Lightbox': Lightbox,
   },
   data() {
     return {
       liked: this.item.liked,
-      count: this.item.count
+      count: this.item.count,
+      thumbnailDir: ""
     }
   },
   props: ['item', 'displayList', 'open'],
@@ -68,7 +81,6 @@ export default {
         isAdd: true
       };
       this.updateCart(order);
-      console.log(this.item["key"]);
     },
     delItem() {
       this.liked = false;
@@ -78,6 +90,9 @@ export default {
         isAdd: false
       };
       this.updateCart(order);
+    },
+    showLightbox(src) {
+      this.$refs.lightbox.show(src);
     }
   },
   filters: {
