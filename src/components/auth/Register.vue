@@ -44,6 +44,7 @@
     methods: {
        ...mapActions(['clearMessage', 'addMessage', 'registerByEmail']),
       FBLogin() {
+        console.log("Pre request");
         FB.getLoginStatus(function(response) {
             console.log("Hi this is response!!" + response);
             let fbId = "testFB";
