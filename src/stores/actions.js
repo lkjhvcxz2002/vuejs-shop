@@ -30,7 +30,7 @@ export const updateCart = ({
 	let message_obj = {};
   if (isAdd) {
     message_obj = {
-      message: `你喜歡 ${item.name} 的照片!!`,
+      message: `你喜歡 ${item.userName} 的照片!!`,
       messageClass: "success",
       autoClose: true
 		}
@@ -38,7 +38,7 @@ export const updateCart = ({
 		addScore(item.key, fbId);
   } else {
 		message_obj = {
-			message: `你取消喜歡 ${item.name} 的照片!!`,
+			message: `你取消喜歡 ${item.userName} 的照片!!`,
       messageClass: "danger",
       autoClose: true
 		}
