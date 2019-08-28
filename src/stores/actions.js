@@ -23,7 +23,7 @@ export const updateCart = ({
   commit
 }, {item, isAdd}) => {
 	// TODO
-	var fbId = "testFB";
+	var fbId = window.$cookies.get("fbId") || "testFB";
 
   // TODO: Call service
 	commit('UPDATE_CART', {item, isAdd});
