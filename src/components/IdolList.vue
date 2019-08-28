@@ -65,7 +65,7 @@ export default {
   },
   methods: {
     onFilterSet (filterText) {
-      if(filterText) this.PPJson = this.storeProducts.filter(o => o.name.toLowerCase().indexOf(filterText) != -1);
+      if(filterText) this.PPJson = this.storeProducts.filter(o => o.userName.toLowerCase().indexOf(filterText) != -1);
       else this.PPJson = this.storeProducts;
     }
   }
