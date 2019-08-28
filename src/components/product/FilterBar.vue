@@ -2,8 +2,8 @@
     <div class="filter-bar ui basic segment grid">
       <div class="ui form">
         <div class="inline field">
-          <label>搜尋:</label>
-          <input type="text" v-model="filterText" class="three column" @keyup="doFilter" placeholder="name, nickname, or email">
+          <label style="font-size: 16px; vertical-align: middle">搜尋:</label>
+          <input type="text" v-model="filterText" class="three column" @keyup="doFilter" placeholder="name, nickname">
         </div>
       </div>
     </div>

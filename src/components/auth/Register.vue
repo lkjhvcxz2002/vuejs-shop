@@ -2,14 +2,11 @@
   <div class="row">
     <div class="col-md-6 offset-md-3 col-sm-10 offset-sm-1">
      <form id="register-form" role="form">
-        <h3 class="text-center">Facebook登入</h3>
+        <h3 class="text-center">投票請登入</h3>
         <div class="form-group" style="height: 100px"></div>
         <div class="form-group" style="text-align: center">
-            <!-- <button class="btn btn-success" style="width: 100%" @click="FBLogin" :disabled="isLoading">
-              <i v-if="isLoading" class="fa fa-spinner fa-spin" />
-              Register
-            </button> -->
-            <div class="btn btn-social btn-facebook " data-width="" data-size="large" @click="FBLogin">Facebook登入</div>
+            <div class="btn btn-primary btn-lg" data-width="" data-size="large" style="font-size: 36px" @click="FBLogin">
+              Facebook登入</div>
         </div>
       </form>
     </div>
@@ -18,7 +15,7 @@
 
 <script>
   import { mapActions } from 'vuex';
-
+  
   function statusChangeCallback(response) {
     console.log(response);
 
@@ -46,7 +43,7 @@
         console.log("Pre request");
         FB.getLoginStatus(function(response) {
             console.log("Hi this is response!!" + response);
-            let fbId = "testFB";
+            let fbId = null;
             statusChangeCallback(response);
             if(response.status == "connected") {
               let authResponse = response.authResponse;
@@ -56,11 +53,12 @@
               alert("請先登入FB~ 否則無法投票喔")
             }
 
-            window.$cookies.config('14d');
-            window.$cookies.set("fbId", fbId);
-
             if (fbId) {
+              window.$cookies.config('14d');
+              window.$cookies.set("fbId", fbId);
               location.href = "/main"
+            } else {
+              location.href = "/"
             }
         });  
       }

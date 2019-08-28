@@ -26,7 +26,7 @@
           <a class="nav-link">活動細節</a>
         </li>
         <li v-on:click="toRegister()" tag="li" v-if="!isLoggedIn" style="cursor:pointer" class="nav-item" active-class="active">
-          <a class="nav-link">報名參加</a>
+          <a class="nav-link">報名參加 <span class="span-remark">(08/31截止)</span></a>
         </li>
         <!-- <router-link to="/main" tag="li" v-if="!isLoggedIn" class="nav-item" disabled>
           <a class="nav-link">投票(09/01開放)</a>
@@ -83,6 +83,10 @@ export default {
 
 
 <style scoped lange="sass">
+.span-remark {
+  color: blue;
+}
+
 .navbar-btn a {
   color: white;
 }

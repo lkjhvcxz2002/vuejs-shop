@@ -11,38 +11,45 @@
          @click="showLightbox(item.name)"  
          :src="item.thumb"  />
 
-        <lightbox :id="'mylightbox'+key" 
+        <!-- <lightbox :id="'mylightbox'+item.key" 
             ref="lightbox"
             :images="[item]"
             :directory="thumbnailDir"
             :timeoutDuration="5000"
-        ></lightbox>
+        ></lightbox> -->
+        <div class="lightbox" v-if="show" @click="closeLightbox(item.name)"  >
+          <img class="lightbox-image" @load="loaded" :src="item.pic" />
+        </div>
     </div>
 
     <div class="card-body">
-      <h6 class="card-title" style="color: green; font-size: 26px"><a>{{ item.userName }}</a></h6>
-      <h6 class="card-subtitle mb-2 remain">
-        <a :href="item.fb" target="_blank" style="color: #0054d6; font-size: 20px;" v-if="item.fb">臉書連結</a>
-      </h6>
-      <div class="row" style="height: 40px;">
-        <p class="col-12 lead">投稿組別: {{item.group}}</p>
+      <div class="row"> 
+        <p class="col-xs-12" style="color: green; font-size: 26px"><a>{{ item.userName }}</a></p>
+        <br>
+        
       </div>
-      <div class="row" style="height: 20px;"></div>
-      <div class="row" v-if="open">
-        <p class="col-6"></p>
-        <p class="col-6">
-          <button class="btn btn-success pull-right" :disabled="item.quantity === 0" @click="addItem" v-if="!liked">
+      <div class="row">
+        <p class="col-xs-12">
+          <a :href="item.fb" target="_blank" style="color: #0054d6; font-size: 20px;" v-if="item.fb">臉書連結</a>
+        </p>
+      </div>
+      <div class="row" >
+        <p class="col-xs-12 lead">投稿組別: {{item.group}}</p>
+      </div>
+      <div class="row" v-if="open" style="padding-top: 20px">
+        <p class="col-xl-12">
+          <button class="btn btn-success btn-lg" :disabled="item.quantity === 0" @click="addItem" v-if="!liked">
             <v-icon name="plus"/>
             我喜歡
           </button>
-          <button class="btn btn-danger pull-right" :disabled="item.quantity === 0" @click="delItem" v-if="liked == true">
+          <button class="btn btn-danger btn-lg" :disabled="item.quantity === 0" @click="delItem" v-if="liked == true">
             <v-icon name="heart"/>
             已喜歡
           </button>
         </p>
       </div>
       <div class="row" v-if="open">
-        <h2 class="picVoteCount">已經獲得 {{count}} 票</h2>
+        <span class="picVoteCount">已經獲得 {{count}} 票 </span>
       </div>
     </div>
   </div>
@@ -67,7 +74,8 @@ export default {
     return {
       liked: this.item.liked,
       count: this.item.count,
-      thumbnailDir: ""
+      thumbnailDir: "",
+      show: false
     }
   },
   props: ['item', 'displayList', 'open'],
@@ -92,7 +100,14 @@ export default {
       this.updateCart(order);
     },
     showLightbox(src) {
-      this.$refs.lightbox.show(src);
+      this.$events.fire('image-open', true)
+      this.show = true;
+    },
+    closeLightbox() {
+      this.show = false;
+    },
+    loaded() {
+      this.$events.fire('image-open', false)
     }
   },
   filters: {
@@ -121,6 +136,31 @@ div.card {
   color: #d17581;
 }
 
+.lightbox {
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: rgba(0, 0, 0, .9);
+    width: 100%;
+    height: 100%;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 200;
+    color: rgba(255,255,255,0.8);
+}
+
+.lightbox-image {
+    display: block;
+    width: 100%;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+}
+
 .grow {
   transition: all .2s ease-in-out;
 }
@@ -134,6 +174,7 @@ div.card {
   font-size: 24px;
   margin-left: 20px;
   margin-top: 20px;
+  text-align: right;
 }
 
 .list-group-item {
@@ -181,6 +222,7 @@ div.card {
 
     .picVoteCount {
       margin-top: 40px;
+      font-size: 18px;
     }
   }
 }

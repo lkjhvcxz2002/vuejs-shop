@@ -3,6 +3,9 @@
   <div class="row text-center" v-if="isProductLoading">
     <grid-loader :loading="isProductLoading" :color="loaderColor" :size="loaderSize"></grid-loader>
   </div>
+  <div class="row text-center loadingImage">
+    <rotate-loader :loading="isImageLoading" :color="loaderColor" :size="loaderSize"></rotate-loader>
+  </div>
   <div  v-if="!isProductLoading">
       <!-- Sort by -->
       <div class="row" v-if="available">
@@ -31,11 +34,17 @@
 import pJson from '../../data/simIdols.json'
 import ProductItem from './product/ProductItem.vue';
 import GridLoader from 'vue-spinner/src/GridLoader.vue';
+import RotateLoader from 'vue-spinner/src/RotateLoader.vue';
 import shuffle from './helper/shuffle';
 import FilterBar from './product/FilterBar'
 import axios from 'axios';
+import { setTimeout } from 'timers';
 
-const avail = false;
+const avail = location.href.indexOf("/main") != -1;
+
+let sortById = function(arr) {
+  // arr.sort((a, b) => { return a.id - b.id;})
+}
 
 let indexArr = [1, 2];
 let jsonArr = [];
@@ -44,7 +53,6 @@ pJson.forEach((element) => {
     indexArr.forEach((num) => {
       let imageK = "pic" + num;
       let thumbK = "thumb" + num;
-      let nameK = "picId" + num;
       if(element[imageK]) {
         jsonArr.push({
           "id" : element["id"],
@@ -54,7 +62,7 @@ pJson.forEach((element) => {
           "group": element["Group"],
           "pic": element[imageK],
           "thumb": element[thumbK],
-          "name": element[nameK]
+          "name": element[imageK]
         });
       }
     })
@@ -66,8 +74,9 @@ jsonArr = shuffle(jsonArr);
 export default {
   data() {
     return {
-      loaderColor: "#5cb85c",
+      loaderColor: "rgba(243, 103, 131, 0.753)",
       loaderSize: "50px",
+      isImageLoading: false,
       displayList: true,
       targetId: "",
       storeProducts: [],
@@ -81,12 +90,14 @@ export default {
   components: {
     appProductItem: ProductItem,
     GridLoader,
+    RotateLoader,
     'filter-bar': FilterBar
   }, 
   mounted() {
     // TODO
     let fbId = window.$cookies.get("fbId");
     console.log("FB ID is : " + JSON.stringify(fbId));
+    if(!fbId && avail) location.href="/";
     this.targetId = this.$route.query.id;
     let url = "/api/getAll" + (this.targetId ? "/" + this.targetId : "");
     axios.get(url).then(res => {
@@ -100,15 +111,22 @@ export default {
         })
       }
 
+      // sort by id
+      sortById(this.products);
+
       this.isProductLoading = false;
     }).catch(err => {
       this.storeProducts = jsonArr;
       this.products = jsonArr;
+
+      // sort by id
+      sortById(this.products);
       alert("取得資料失敗，請回報主辦單位: " + err)
       this.isProductLoading = false;
     })
 
     this.$events.$on('filter-set', eventData => this.onFilterSet(eventData));
+    this.$events.$on('image-open', eventData => this.openLoading(eventData));
   },
   methods: {
     changeDisplay(isList) {
@@ -126,6 +144,8 @@ export default {
       this.products.sort(function(a, b) {
         return b["count"] - a["count"];
       });
+    },openLoading(eventData) {
+      this.isImageLoading = eventData;
     }
   }
 }
@@ -136,6 +156,16 @@ export default {
   align-items: center;
   justify-content: center;
   display: flex;
+}
+
+.loadingImage {
+  align-items: center;
+  justify-content: center;
+  display: flex;
+      position: fixed;
+    left: 50%;
+    top: 48%;
+    z-index: 300;
 }
 
 .action-panel {
