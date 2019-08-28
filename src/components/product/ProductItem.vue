@@ -155,7 +155,7 @@ div.card {
 
 .lightbox-image {
     display: block;
-    width: 100%;
+    height: 100%;
     background-size: contain;
     background-repeat: no-repeat;
     background-position: 50% 50%;
@@ -223,6 +223,15 @@ div.card {
     .picVoteCount {
       margin-top: 40px;
       font-size: 18px;
+    }
+
+    .lightbox-image {
+        display: block;
+        height: auto;
+        width: 100%;
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: 50% 50%;
     }
   }
 }
