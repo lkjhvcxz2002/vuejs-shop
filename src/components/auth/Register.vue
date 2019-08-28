@@ -9,8 +9,7 @@
               <i v-if="isLoading" class="fa fa-spinner fa-spin" />
               Register
             </button> -->
-            <div class="fb-login-button" data-width="" data-size="large" data-button-type="continue_with" @click="FBLogin"
-               data-auto-logout-link="false" data-use-continue-as="false"></div>
+            <div class="btn btn-social btn-facebook " data-width="" data-size="large" @click="FBLogin">Facebook登入</div>
         </div>
       </form>
     </div>
@@ -49,20 +48,20 @@
             console.log("Hi this is response!!" + response);
             let fbId = "testFB";
             statusChangeCallback(response);
-            // if(response.status == "connected") {
-            //   let authResponse = response.authResponse;
-            //   console.log(authResponse);
-            //   fbId = authResponse.userID;
-            // } else {
-            //   alert("請先登入FB~ 否則無法投票喔")
-            // }
+            if(response.status == "connected") {
+              let authResponse = response.authResponse;
+              console.log(authResponse);
+              fbId = authResponse.userID;
+            } else {
+              alert("請先登入FB~ 否則無法投票喔")
+            }
 
-            // this.$cookies.config('14d');
-            // this.$cookies.set("fbId", fbId);
+            window.$cookies.config('14d');
+            window.$cookies.set("fbId", fbId);
 
-            // if (fbId) {
-            //   location.href = "/main"
-            // }
+            if (fbId) {
+              location.href = "/main"
+            }
         });  
       }
     }
