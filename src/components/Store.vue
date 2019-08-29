@@ -8,7 +8,7 @@
   </div>
   <div  v-if="!isProductLoading">
       <!-- Sort by -->
-      <div class="row">
+      <div class="row" v-if="!targetId">
         <div class="col-md-4 col-md-offset-4 btn-group btn-group-toggle">
           <button type="radio" class="btn btn-secondary" :class="{'active': sortBy == 'random'}" v-on:click="sortByRandom()">隨機排序</button>
           <button type="radio" class="btn btn-secondary" :class="{'active': sortBy == 'seq'}" v-on:click="sortBySeq()">報名順序</button>
@@ -17,7 +17,7 @@
       </div>
 
       <!-- Filter & See All -->
-      <div class="ui">
+      <div class="row" style="margin-left: 10px; margin-bottom: 20px">
           <button class="ui small primary button right floated" style="margin-top:15px" v-on:click="seeAll()" v-if="targetId">查看全部</button>
       </div>
       <filter-bar v-if="!targetId"></filter-bar>
@@ -41,8 +41,8 @@ import FilterBar from './product/FilterBar'
 import axios from 'axios';
 import { setTimeout } from 'timers';
 
-const isOpen = new Date().getTime() > 1567267200000;
-// const isOpen = new Date().getTime() > 156726720;
+// const isOpen = new Date().getTime() > 1567267200000;
+const isOpen = new Date().getTime() > 156726720;
 const avail = window.$cookies.get("fbId") != null;
 
 let indexArr = [1, 2];
