@@ -24,7 +24,6 @@
 
       <div class="row">
           <app-product-item v-for="prod in products" :item="prod" :key="prod.key" :displayList="displayList" :open="available"></app-product-item>
-
       </div>
   </div>
 
