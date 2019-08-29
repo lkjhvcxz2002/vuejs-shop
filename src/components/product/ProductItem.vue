@@ -136,6 +136,10 @@ div.card {
   color: #d17581;
 }
 
+.lead {
+  font-size: 1.5em;
+}
+
 .lightbox {
     position: fixed;
     top: 0;

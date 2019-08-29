@@ -8,10 +8,11 @@
   </div>
   <div  v-if="!isProductLoading">
       <!-- Sort by -->
-      <div class="row" v-if="available">
+      <div class="row">
         <div class="col-md-4 col-md-offset-4 btn-group btn-group-toggle">
-          <button type="radio" class="btn btn-secondary" :class="{'active': byRandom}" v-on:click="sortByRandom()">隨機排序</button>
-          <button type="radio" class="btn btn-secondary" :class="{'active': !byRandom}" v-on:click="sortByCount()">人氣排序</button>
+          <button type="radio" class="btn btn-secondary" :class="{'active': sortBy == 'random'}" v-on:click="sortByRandom()">隨機排序</button>
+          <button type="radio" class="btn btn-secondary" :class="{'active': sortBy == 'seq'}" v-on:click="sortBySeq()">報名順序</button>
+          <button type="radio" class="btn btn-secondary" :class="{'active': sortBy == 'count'}" v-on:click="sortByCount()">人氣排序</button>
         </div>
       </div>
 
@@ -40,11 +41,9 @@ import FilterBar from './product/FilterBar'
 import axios from 'axios';
 import { setTimeout } from 'timers';
 
-const avail = location.href.indexOf("/main") != -1;
-
-let sortById = function(arr) {
-  // arr.sort((a, b) => { return a.id - b.id;})
-}
+const isOpen = new Date().getTime() > 1567267200000;
+// const isOpen = new Date().getTime() > 156726720;
+const avail = window.$cookies.get("fbId") != null;
 
 let indexArr = [1, 2];
 let jsonArr = [];
@@ -82,9 +81,9 @@ export default {
       storeProducts: [],
       products: [],
       likedList: [],
-      available: avail,
+      available: avail && isOpen,
       isProductLoading: true,
-      byRandom: true
+      sortBy: 'random'
     }
   },
   components: {
@@ -111,16 +110,10 @@ export default {
         })
       }
 
-      // sort by id
-      sortById(this.products);
-
       this.isProductLoading = false;
     }).catch(err => {
       this.storeProducts = jsonArr;
       this.products = jsonArr;
-
-      // sort by id
-      sortById(this.products);
       alert("取得資料失敗，請回報主辦單位: " + err)
       this.isProductLoading = false;
     })
@@ -137,13 +130,16 @@ export default {
     },seeAll() {
       location.href = "/main";
     },sortByRandom() {
-      this.byRandom = true;
+      this.sortBy = 'random';
       this.products = shuffle(this.products);
     },sortByCount() {
-      this.byRandom = false;
+      this.sortBy = 'count';
       this.products.sort(function(a, b) {
         return b["count"] - a["count"];
       });
+    },sortBySeq() {
+      this.sortBy = 'seq';
+      this.products.sort((a, b) => { return a.accountId - b.accountId;})
     },openLoading(eventData) {
       this.isImageLoading = eventData;
     }
