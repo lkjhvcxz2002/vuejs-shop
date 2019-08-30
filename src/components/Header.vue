@@ -46,7 +46,7 @@
 
 <script>
 const isOpen = new Date().getTime() > 1567267200000;
-
+  
 import {
   mapActions, mapGetters
 } from 'vuex';
