@@ -19,19 +19,22 @@
 
       </ul>
       <ul class="nav navbar-nav">
-        <router-link to="/list" tag="li" v-if="!isLoggedIn" class="nav-item" active-class="active">
+        <router-link to="/list" tag="li" class="nav-item" active-class="active">
           <a class="nav-link">參加者列表</a>
         </router-link>
-        <li v-on:click="toDetail()" tag="li" v-if="!isLoggedIn" style="cursor:pointer" class="nav-item" active-class="active">
+        <li v-on:click="toDetail()" tag="li" style="cursor:pointer" class="nav-item" active-class="active">
           <a class="nav-link">活動細節</a>
         </li>
-        <li v-on:click="toRegister()" tag="li" v-if="!isLoggedIn" style="cursor:pointer" class="nav-item" active-class="active">
-          <a class="nav-link">報名參加 <span class="span-remark">(08/31截止)</span></a>
+        <li v-on:click="toRegister()" tag="li" style="cursor:pointer" class="nav-item" active-class="active">
+          <a class="nav-link">報名參加 
+            <span class="span-remark" v-if="!isOpen">(08/31截止)</span>
+            <span class="span-remark" v-if="isOpen" style="color:#e5ff60">(已截止)</span>
+          </a>
         </li>
-        <!-- <router-link to="/main" tag="li" v-if="!isLoggedIn" class="nav-item" disabled>
-          <a class="nav-link">投票(09/01開放)</a>
-        </router-link> -->
-        <li class="nav-item">
+        <router-link to="/vote" tag="li" v-if="isOpen" class="nav-item">
+          <a class="nav-link">投票區</a>
+        </router-link>
+        <li class="nav-item" v-if="!isOpen">
           <a class="nav-link" style="color: #5f5f5f">投票區(09/01開放)</a>
         </li>
       </ul>
@@ -42,13 +45,16 @@
 </template>
 
 <script>
+const isOpen = new Date().getTime() > 1567267200000;
+
 import {
   mapActions, mapGetters
 } from 'vuex';
 export default {
   data() {
     return {
-      isNavOpen: false
+      isNavOpen: false,
+      isOpen: isOpen
     }
   },
   computed: {
