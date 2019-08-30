@@ -18,19 +18,48 @@
 
       <!-- Filter & See All -->
       <div class="row" style="margin-left: 10px; margin-bottom: 20px">
-          <button class="ui small primary button right floated" style="margin-top:15px" v-on:click="seeAll()" v-if="targetId">查看全部</button>
+          <button class="ui small primary button right floated" style="margin-top:15px" v-on:click="seeAll()" v-if="targetId">
+            <v-icon name="arrow-left" />
+            <span style="vertical-align: middle;font-size: 16px;">&nbsp;  查看全部</span>
+          </button>
+
       </div>
-      <filter-bar v-if="!targetId"></filter-bar>
+      <div class="row" style="margin-bottom: 10px">
+        <div class="col-md-6 col-sm-5">
+          <filter-bar v-if="!targetId"></filter-bar>
+        </div>
+        <div class="col-md-6 col-sm-7">
+              <button class="ui violet button pull-right" v-on:click="seeInstruction()" style="height: 35px;" >
+              <v-icon name="edit" />
+              <span style="vertical-align: middle;font-size: 16px;">&nbsp;  投票說明</span>
+            </button>
+        </div>
+      </div>
 
       <div class="row">
           <app-product-item v-for="prod in products" :item="prod" :key="prod.key" :displayList="displayList" :open="available"></app-product-item>
       </div>
   </div>
-
+  <SweetModal ref="modal">
+    <div class="ui centered">
+      <h2 class="ui green button" style="font-size: 20px; cursor: auto">投票說明</h2>
+      <div class="ui ordered list" style="margin-top: 60px">
+        <div class="item">必須先登入Facebook帳號後才能進行投票 <span class="tiny"> 避免有人洗票</span></div>
+        <div class="item">每人投票數量無上限 <span class="tiny"> 歡迎當個狂讚士(ﾟ∀ﾟ)))</span></div>
+        <div class="item">按一次[我喜歡]是投票 按兩次[我喜歡]是取消投票 <span class="tiny">這應該不用特別說明... 吧?</span></div>
+        <div class="item">如果功能有問題 請嘗試重新整理頁面  <span class="tiny"> 或是走去客廳燒炷香...</span></div>
+        <div class="item">如果還是有問題 請畫面截圖聯絡<a target="_blank" href="https://www.facebook.com/profile.php?id=100012111157041">主辦人</a>
+          <span class="tiny"> 並且祈禱我沒在上班或睡覺QQ</span>
+        </div>
+      </div>
+    </div>
+  </SweetModal>
 </div>
 </template>
 
 <script>
+import Icon from 'vue-awesome'
+import { SweetModal } from 'sweet-modal-vue'
 import pJson from '../../data/simIdols.json'
 import ProductItem from './product/ProductItem.vue';
 import GridLoader from 'vue-spinner/src/GridLoader.vue';
@@ -86,10 +115,12 @@ export default {
     }
   },
   components: {
+    'SweetModal': SweetModal,
+    'v-icon': Icon,
     appProductItem: ProductItem,
     GridLoader,
     RotateLoader,
-    'filter-bar': FilterBar
+    'filter-bar': FilterBar,
   }, 
   mounted() {
     // TODO
@@ -141,6 +172,8 @@ export default {
       this.products.sort((a, b) => { return a.accountId - b.accountId;})
     },openLoading(eventData) {
       this.isImageLoading = eventData;
+    },seeInstruction() {
+      this.$refs.modal.open();
     }
   }
 }
@@ -167,4 +200,9 @@ export default {
   margin-bottom: 10px;
   margin-right: 5px;
 }
+
+  .tiny {
+    font-size: 10px;
+    color: cornflowerblue;
+  }
 </style>

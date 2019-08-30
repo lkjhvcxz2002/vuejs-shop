@@ -19,6 +19,7 @@
     "firebase": "^5.11.1",
     "nodeman": "^1.1.2",
     "npm": "^6.11.2",
+    "sweet-modal-vue": "^2.0.0",
     "vue": "^2.6.10",
     "vue-awesome": "^3.5.4",
     "vue-cookies": "^1.5.13",

@@ -32,6 +32,7 @@ app.get('/api/addScore/:key/:fbId', taskList.addScore.bind(taskList));
 app.get('/api/delScore/:key/:fbId', taskList.delScore.bind(taskList));
 app.get('/api/scoreAll', taskList.scoreAll.bind(taskList));
 app.post('/api/updateData', taskList.updateData.bind(taskList))
+app.post('/api/updateOne', taskList.updateOne.bind(taskList))
 app.get('/api/getAll', taskList.getAll.bind(taskList));
 app.get('/api/getAll/:id', taskList.getAll.bind(taskList));
 

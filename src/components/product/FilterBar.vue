@@ -1,5 +1,5 @@
   <template>
-    <div class="filter-bar ui basic segment grid">
+    <div class="filter-bar ui">
       <div class="ui form">
         <div class="inline field">
           <label style="font-size: 16px; vertical-align: middle">搜尋:</label>

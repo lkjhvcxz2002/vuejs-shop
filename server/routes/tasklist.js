@@ -251,7 +251,27 @@ TaskList.prototype = {
             res.send(items);
         });
     }, 
+    updateOne: function(req, res) {
+        var self = this;
+        var items = req.body;    
 
+        async.forEach(items, function taskIterator(item, callback) {
+            self.taskDao.updateItem(item, function (err) {
+                if (err) {
+                    callback(err);
+                } else {
+                    callback(null);
+                }
+            });
+        }, function goHome(err) {
+            if (err) {
+                console.log(err);
+                throw err;
+            } else {
+                res.send("Update Data successful!!");
+            }
+        });
+    },
     updateData: function(req, res) {
         var self = this;
         var picArr = [1, 2];
