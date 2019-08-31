@@ -47,14 +47,28 @@
         console.log("Pre request");
         let targetId = this.targetId;
         FB.getLoginStatus(function(response) {
-            console.log("Hi this is response!!" + response);
+            console.log("Hi this is response!!" + JSON.stringify(response));
             let fbId = null;
             statusChangeCallback(response);
             if(response.status == "connected") {
               let authResponse = response.authResponse;
               console.log(authResponse);
               fbId = authResponse.userID;
-            } else {
+            } 
+            else if (response.status == "not_authorized") {
+              console.log("Call FB login");
+              FB.login(function(response){
+                  console.log(JSON.stringify(response));
+                  if (response.status === 'connected') {
+                    let authResponse = response.authResponse;
+                    console.log(authResponse);
+                    fbId = authResponse.userID;
+                  } else {
+                    alert("請先登入FB~ 否則無法投票喔~ 錯誤訊息: " + JSON.stringify(response));
+                  }
+              }, {scope: 'public_profile'});
+            }
+            else {
               alert("請先登入FB~ 否則無法投票喔~ 錯誤訊息: " + JSON.stringify(response));
               // window.$cookies.set("fbId", "testFb");
             }
