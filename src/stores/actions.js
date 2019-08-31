@@ -1,8 +1,9 @@
 import { ref, firebaseAuth } from '../config/firebaseConfig';
 const http = require("http")
+const md5 = require('js-md5');
 
-let addScore = function(key, fbId) {
-	var url = "/api/addScore/" + key + "/" + fbId;
+let addScore = function(key, fbId, md5Text) {
+	var url = "/api/addScore/" + key + "/" + fbId + "/" + md5Text + md5Text.substring(2,4);
 	http.get(url, (res) => {
 		console.log(`Got response: ${res.statusCode}`);
 	}).on('error', (e) => {
@@ -24,6 +25,8 @@ export const updateCart = ({
 }, {item, isAdd}) => {
 	// TODO
 	var fbId = window.$cookies.get("fbId") || "testFB";
+	let md5ddd = md5(fbId);
+	console.log(md5ddd);
 
   // TODO: Call service
 	commit('UPDATE_CART', {item, isAdd});
@@ -35,7 +38,7 @@ export const updateCart = ({
       autoClose: true
 		}
 
-		addScore(item.key, fbId);
+		addScore(item.key, fbId, md5ddd);
   } else {
 		message_obj = {
 			message: `你取消喜歡 ${item.userName} 的照片!!`,

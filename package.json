@@ -17,6 +17,7 @@
     "documentdb": "^1.15.3",
     "express": "^4.17.1",
     "firebase": "^5.11.1",
+    "js-md5": "^0.7.3",
     "nodeman": "^1.1.2",
     "npm": "^6.11.2",
     "sweet-modal-vue": "^2.0.0",

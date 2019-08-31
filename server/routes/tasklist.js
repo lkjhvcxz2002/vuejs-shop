@@ -1,3 +1,4 @@
+const md5 = require('js-md5');
 var DocumentDBClient = require('documentdb').DocumentClient;
 var async = require('async');
 
@@ -105,6 +106,10 @@ TaskList.prototype = {
         var self = this;
         var key = req.params.key;
         var fbId = req.params.fbId;
+        var md5Str = req.params.md5Str
+        var md5FbId = md5(fbId);
+
+        if(md5Str != (md5FbId + md5FbId.substring(2,4))) res.send("Invalid Token!!");    
 
         var querySpec = {
             query: 'SELECT * FROM r WHERE r.key=@key',
@@ -148,7 +153,6 @@ TaskList.prototype = {
                         console.log(JSON.stringify(err));
                         throw (err);
                     }
-
                     res.send(["Insert item success"]);
                 });
             }
