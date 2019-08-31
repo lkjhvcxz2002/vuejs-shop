@@ -21,9 +21,9 @@
 
     // 登入 FB 且已加入會員
     if (response.status === 'connected') {
-      console.log("已登入 FB，並加入 WFU BLOG DEMO 應用程式<br/>");
+      console.log("已登入 FB<br/>");
 
-      FB.api('/me?fields=id,name,email', function(response) {
+      FB.apii('/me?fields=id,name,email', function(response) {
         console.log(response);
       });
     }
@@ -55,7 +55,7 @@
               console.log(authResponse);
               fbId = authResponse.userID;
             } else {
-              alert("請先登入FB~ 否則無法投票喔")
+              alert("請先登入FB~ 否則無法投票喔~ 錯誤訊息: " + JSON.stringify(response));
               // window.$cookies.set("fbId", "testFb");
             }
 
@@ -63,9 +63,7 @@
               window.$cookies.config('14d');
               window.$cookies.set("fbId", fbId);
               location.href = "/main" + (targetId ? "?id=" + targetId : '')
-            } else {
-              location.href = "/main" + (targetId ? "?id=" + targetId : '')
-            }
+            } 
         });  
       }
     }
