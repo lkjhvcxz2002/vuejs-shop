@@ -42,7 +42,7 @@
               console.log(authResponse);
               fbId = authResponse.userID;
             } 
-            else if (response.status == "not_authorized") {
+            else {
               console.log("Call FB login");
               FB.login(function(response){
                   console.log(JSON.stringify(response));
@@ -58,10 +58,6 @@
                     alert("請按下同意才能同票喔~ 錯誤訊息: " + JSON.stringify(response));
                   }
               }, {scope: 'public_profile'});
-            }
-            else {
-              alert("您當前的瀏覽器尚未登入Facebook, 請先登入Facebook或是更改成其他瀏覽器(Chrome, Safari)才能進行投票喔~ " + JSON.stringify(response));
-              // window.$cookies.set("fbId", "testFb");
             }
 
             if (fbId) {
