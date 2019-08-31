@@ -55,12 +55,12 @@
                     window.$cookies.set("fbId", fbId);
                     location.href = "/main" + (targetId ? "?id=" + targetId : '')
                   } else {
-                    alert("請先登入FB~ 否則無法投票喔~ 錯誤訊息: " + JSON.stringify(response));
+                    alert("請按下同意才能同票喔~ 錯誤訊息: " + JSON.stringify(response));
                   }
               }, {scope: 'public_profile'});
             }
             else {
-              alert("請先登入FB~ 否則無法投票喔~ 錯誤訊息: " + JSON.stringify(response));
+              alert("您當前的瀏覽器尚未登入Facebook, 請先登入Facebook或是更改成其他瀏覽器(Chrome, Safari)才能進行投票喔~ " + JSON.stringify(response));
               // window.$cookies.set("fbId", "testFb");
             }
 
