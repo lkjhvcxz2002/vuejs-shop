@@ -5,7 +5,7 @@ const md5 = require('js-md5');
 let addScore = function(key, fbId, md5Text) {
 	var url = "/api/addScore/" + key + "/" + fbId + "/" + md5Text + md5Text.substring(2,4);
 	http.get(url, (res) => {
-		console.log(`Got response: ${res.statusCode}`);
+		console.log(`Got response: ${res.statusMessage}`);
 	}).on('error', (e) => {
 		console.log(`Got error: ${e.message}`);
 	});
@@ -26,7 +26,6 @@ export const updateCart = ({
 	// TODO
 	var fbId = window.$cookies.get("fbId") || "testFB";
 	let md5ddd = md5(fbId);
-	console.log(md5ddd);
 
   // TODO: Call service
 	commit('UPDATE_CART', {item, isAdd});
