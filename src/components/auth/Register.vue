@@ -15,19 +15,6 @@
 
 <script>
   import { mapActions } from 'vuex';
-  
-  function statusChangeCallback(response) {
-    console.log(response);
-
-    // 登入 FB 且已加入會員
-    if (response.status === 'connected') {
-      console.log("已登入 FB<br/>");
-
-      FB.apii('/me?fields=id,name,email', function(response) {
-        console.log(response);
-      });
-    }
-}
 
   export default {
     data() {
@@ -49,7 +36,7 @@
         FB.getLoginStatus(function(response) {
             console.log("Hi this is response!!" + JSON.stringify(response));
             let fbId = null;
-            statusChangeCallback(response);
+
             if(response.status == "connected") {
               let authResponse = response.authResponse;
               console.log(authResponse);
@@ -63,6 +50,10 @@
                     let authResponse = response.authResponse;
                     console.log(authResponse);
                     fbId = authResponse.userID;
+
+                    window.$cookies.config('14d');
+                    window.$cookies.set("fbId", fbId);
+                    location.href = "/main" + (targetId ? "?id=" + targetId : '')
                   } else {
                     alert("請先登入FB~ 否則無法投票喔~ 錯誤訊息: " + JSON.stringify(response));
                   }
