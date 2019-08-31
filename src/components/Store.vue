@@ -47,6 +47,7 @@
         <div class="item">必須先登入Facebook帳號後才能進行投票 <span class="tiny"> 右上角那個按鈕點下去!</span></div>
         <div class="item">每人投票數量無上限 <span class="tiny"> 歡迎當個狂讚士(ﾟ∀ﾟ)))</span></div>
         <div class="item">按一次[我喜歡]是投票 按兩次[我喜歡]是取消投票 <span class="tiny">這應該不用特別說明... 吧?</span></div>
+        <div class="item">點一次圖片會放大 圖片再點一次會縮小  <span class="tiny"> 我忘記幫圖片留邊了 (｡A｡)</span></div>
         <div class="item">如果功能有問題 請嘗試重新整理頁面  <span class="tiny"> 或是走去客廳燒炷香...</span></div>
         <div class="item">如果還是有問題 請畫面截圖聯絡<a target="_blank" href="https://www.facebook.com/profile.php?id=100012111157041">主辦人</a>
           <span class="tiny"> 並且祈禱我沒在上班或睡覺QQ</span>
