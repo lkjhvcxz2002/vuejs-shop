@@ -24,13 +24,13 @@
 
     <div class="card-body">
       <div class="row"> 
-        <p class="col-xs-12" style="color: green; font-size: 26px"><a>{{ item.userName }}</a></p>
+        <p class="col-xs-12" style="color: green; font-size: 26px"><a :href="directLink">{{ item.userName }}</a></p>
         <br>
         
       </div>
       <div class="row">
         <p class="col-xs-12">
-          <a :href="item.fb" target="_blank" style="color: #0054d6; font-size: 20px;" v-if="item.fb">臉書連結</a>
+          <a :href="item.fb" target="_blank" style="color: #0054d6; font-size: 20px;" v-if="item.fb && item.fb.indexOf('http') != -1">臉書連結</a>
         </p>
       </div>
       <div class="row" >
@@ -75,7 +75,8 @@ export default {
       liked: this.item.liked,
       count: this.item.count,
       thumbnailDir: "",
-      show: false
+      show: false,
+      directLink: "/main?id=" + this.item.accountId
     }
   },
   props: ['item', 'displayList', 'open'],

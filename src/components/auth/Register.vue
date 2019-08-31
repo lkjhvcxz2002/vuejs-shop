@@ -34,13 +34,18 @@
       return {
         email: '',
         password: '',
-        isLoading: false
+        isLoading: false,
+        targetId: ''
       }
+    },
+    mounted() {
+      this.targetId = this.$route.params.id;
     },
     methods: {
        ...mapActions(['clearMessage', 'addMessage', 'registerByEmail']),
       FBLogin() {
         console.log("Pre request");
+        let targetId = this.targetId;
         FB.getLoginStatus(function(response) {
             console.log("Hi this is response!!" + response);
             let fbId = null;
@@ -56,9 +61,9 @@
             if (fbId) {
               window.$cookies.config('14d');
               window.$cookies.set("fbId", fbId);
-              location.href = "/main"
+              location.href = "/main" + (targetId ? "?id=" + targetId : '')
             } else {
-              location.href = "/"
+              location.href = "/main" + (targetId ? "?id=" + targetId : '')
             }
         });  
       }

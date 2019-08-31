@@ -44,7 +44,7 @@
     <div class="ui centered">
       <h2 class="ui green button" style="font-size: 20px; cursor: auto">投票說明</h2>
       <div class="ui ordered list" style="margin-top: 60px">
-        <div class="item">必須先登入Facebook帳號後才能進行投票 <span class="tiny"> 避免有人洗票</span></div>
+        <div class="item">必須先登入Facebook帳號後才能進行投票 <span class="tiny"> 右上角那個按鈕點下去!</span></div>
         <div class="item">每人投票數量無上限 <span class="tiny"> 歡迎當個狂讚士(ﾟ∀ﾟ)))</span></div>
         <div class="item">按一次[我喜歡]是投票 按兩次[我喜歡]是取消投票 <span class="tiny">這應該不用特別說明... 吧?</span></div>
         <div class="item">如果功能有問題 請嘗試重新整理頁面  <span class="tiny"> 或是走去客廳燒炷香...</span></div>
@@ -70,7 +70,6 @@ import axios from 'axios';
 import { setTimeout } from 'timers';
 
 const isOpen = new Date().getTime() > 1567267200000;
-// const isOpen = new Date().getTime() > 156726720;
 const avail = window.$cookies.get("fbId") != null;
 
 let indexArr = [1, 2];
@@ -83,6 +82,7 @@ pJson.forEach((element) => {
       if(element[imageK]) {
         jsonArr.push({
           "id" : element["id"],
+          "accountId" : element["id"],
           "key": element["id"].toString() + num.toString(),
           "userName": element["name"],
           "fb": element["fb"],

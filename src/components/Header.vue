@@ -1,7 +1,7 @@
 <template>
 <nav class="navbar navbar-expand-sm navbar-dark bg-pink" role="navigation">
   <div class="container">
-    <router-link to="/" class="navbar-brand mr-auto webTitle">2020 偽娘桌曆徵選 </router-link>
+    <li v-on:click="toHome()" class="navbar-brand mr-auto webTitle">2020 偽娘桌曆徵選 </li>
     <button
         class="navbar-toggler"
         type="button"
@@ -31,22 +31,21 @@
             <span class="span-remark" v-if="isOpen" style="color:#e5ff60">(已截止)</span>
           </a>
         </li>
-        <router-link to="/vote" tag="li" v-if="isOpen" class="nav-item">
-          <a class="nav-link">投票區</a>
+        <router-link :to="voteLink" tag="li" v-if="isOpen" class="nav-item">
+          <a class="nav-link" style="color: blue">投票登入</a>
         </router-link>
         <li class="nav-item" v-if="!isOpen">
-          <a class="nav-link" style="color: #5f5f5f">投票區(09/01開放)</a>
+          <a class="nav-link" style="color: #5f5f5f;margin-top: 2px;">投票區(09/01開放)</a>
         </li>
       </ul>
     </div>
   </div>
-  <!-- /.container -->
 </nav>
 </template>
 
 <script>
 const isOpen = new Date().getTime() > 1567267200000;
-  
+
 import {
   mapActions, mapGetters
 } from 'vuex';
@@ -54,7 +53,9 @@ export default {
   data() {
     return {
       isNavOpen: false,
-      isOpen: isOpen
+      isOpen: isOpen,
+      targetId: '',
+      voteLink: "/vote"
     }
   },
   computed: {
@@ -69,6 +70,10 @@ export default {
       return this.isLoggedIn ? this.currentUser.email : ''
     }
   },
+  mounted() {
+    this.targetId = this.$route.query.id;
+    if(this.targetId) this.voteLink = "/vote/" + this.targetId;
+  },
   methods: {
     ...mapActions(['logout']),
     toggleNavbar() {
@@ -79,9 +84,11 @@ export default {
         window.open(detailUrl, "_blank");
     },
     toRegister() {
-        var ret = window.confirm("報名前請先確認閱讀過活動細節~") ;
-        if(ret == true) {let registerUrl ="https://docs.google.com/forms/d/1LRwxeKCBumzFuQ-lOlxYJbMdBCvSSB2EbgV_WDJshiw/edit";
-            window.open(registerUrl, "_blank");}
+        let registerUrl ="https://docs.google.com/forms/d/1LRwxeKCBumzFuQ-lOlxYJbMdBCvSSB2EbgV_WDJshiw/edit";
+        window.open(registerUrl, "_blank");
+    },
+    toHome() {
+      location.href = "/main"
     }
   }
 }
@@ -108,6 +115,7 @@ export default {
 .webTitle {
   font-size: 18pt;
   font-size: bold;
+  cursor: pointer;
 }
 
 .bg-pink {

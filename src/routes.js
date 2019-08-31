@@ -12,6 +12,7 @@ export const routes = [
 	{path: '/cart', component: ShoppingCart, name: 'shoppingcart'},
 	{path: '/list', component: IdolList, name: 'list' },
 	{path: '/vote', component: FBLogin, name: 'vote' },
+	{path: '/vote/:id', component: FBLogin, name: 'vote' },
 	{path: '/login', component: IdolList, name: 'login' },
 	{path: '/register', component: Register, name: 'register', onlyGuest: true},
 	{path: '*', redirect: '/' }
