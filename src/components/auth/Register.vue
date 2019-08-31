@@ -56,6 +56,7 @@
               fbId = authResponse.userID;
             } else {
               alert("請先登入FB~ 否則無法投票喔")
+              // window.$cookies.set("fbId", "testFb");
             }
 
             if (fbId) {

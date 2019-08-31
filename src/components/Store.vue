@@ -70,6 +70,7 @@ import axios from 'axios';
 import { setTimeout } from 'timers';
 
 const isOpen = new Date().getTime() > 1567267200000;
+// const isOpen = new Date().getTime() > 1567261500000;
 const avail = window.$cookies.get("fbId") != null;
 
 let indexArr = [1, 2];
@@ -202,7 +203,7 @@ export default {
 }
 
   .tiny {
-    font-size: 10px;
+    font-size: 14px;
     color: cornflowerblue;
   }
 </style>

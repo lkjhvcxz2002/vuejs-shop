@@ -28,10 +28,10 @@
         <li v-on:click="toRegister()" tag="li" style="cursor:pointer" class="nav-item" active-class="active">
           <a class="nav-link">報名參加 
             <span class="span-remark" v-if="!isOpen">(08/31截止)</span>
-            <span class="span-remark" v-if="isOpen" style="color:#e5ff60">(已截止)</span>
+            <span class="span-remark" v-if="isOpen" style="color: rgb(0, 0, 0);font-size: 12px;">(已截止)</span>
           </a>
         </li>
-        <router-link :to="voteLink" tag="li" v-if="isOpen" class="nav-item">
+        <router-link :to="voteLink" tag="li" v-if="isOpen && !avail" class="nav-item" style="padding: 2px;">
           <a class="nav-link" style="color: blue">投票登入</a>
         </router-link>
         <li class="nav-item" v-if="!isOpen">
@@ -45,7 +45,8 @@
 
 <script>
 const isOpen = new Date().getTime() > 1567267200000;
-
+// const isOpen = new Date().getTime() > 1567261500000;
+const avail = window.$cookies.get("fbId") != null;
 import {
   mapActions, mapGetters
 } from 'vuex';
@@ -55,7 +56,8 @@ export default {
       isNavOpen: false,
       isOpen: isOpen,
       targetId: '',
-      voteLink: "/vote"
+      voteLink: "/vote",
+      avail: avail
     }
   },
   computed: {

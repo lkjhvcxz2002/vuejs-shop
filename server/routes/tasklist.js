@@ -118,10 +118,9 @@ TaskList.prototype = {
             // Has record
             if(items && items.length > 0) {
                 let item = items[0]
-                console.log(JSON.stringify(item))
+                console.log("Like " + item["key"] + ", from " + fbId);
                 // Already Liked
                 if(item["likedList"].indexOf(fbId.toString()) != -1) {
-                    console.log("hi");
                     res.send(["Already Liked"]);
                 } 
                 // Not Liked yet
@@ -173,7 +172,7 @@ TaskList.prototype = {
             // Has record
             if(items && items.length > 0) {
                 let item = items[0]
-                console.log(JSON.stringify(item))
+                console.log("Remove Like " + item["key"] + ", from " + fbId);
                 // Already Liked
                 if(item["likedList"].indexOf(fbId.toString()) != -1) {
                     // Remove like
