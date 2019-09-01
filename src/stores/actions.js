@@ -2,8 +2,8 @@ import { ref, firebaseAuth } from '../config/firebaseConfig';
 const http = require("http")
 const md5 = require('js-md5');
 
-let addScore = function(key, fbId, md5Text) {
-	var url = "/api/addScore/" + key + "/" + fbId + "/" + md5Text + md5Text.substring(2,4);
+let plua = function(key, fbId, token) {
+	var url = "/api/plua/" + key + "/" + fbId + "/" + token.substring(6,7) + token + token.substring(2,4);
 	http.get(url, (res) => {
 		console.log(`Got response: ${res.statusMessage}`);
 	}).on('error', (e) => {
@@ -37,7 +37,7 @@ export const updateCart = ({
       autoClose: true
 		}
 
-		addScore(item.key, fbId, md5ddd);
+		plua(item.key, fbId, md5ddd);
   } else {
 		message_obj = {
 			message: `你取消喜歡 ${item.userName} 的照片!!`,

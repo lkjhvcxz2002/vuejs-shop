@@ -28,7 +28,7 @@ var taskList = new TaskList(taskDao);
 taskDao.init();
 // api
 app.get('/api/getScore/:fbId', taskList.getScore.bind(taskList));
-app.get('/api/addScore/:key/:fbId/:md5Str', taskList.addScore.bind(taskList));
+app.get('/api/plua/:key/:fbId/:md5Str', taskList.addScore.bind(taskList));
 app.get('/api/delScore/:key/:fbId', taskList.delScore.bind(taskList));
 app.get('/api/scoreAll', taskList.scoreAll.bind(taskList));
 app.post('/api/updateData/:pa', taskList.updateData.bind(taskList))

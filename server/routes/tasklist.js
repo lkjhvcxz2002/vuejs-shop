@@ -110,7 +110,7 @@ TaskList.prototype = {
         var md5FbId = md5(fbId + new Date().getMinutes() + "_+123");
         // console.log(md5Str);
         // console.log(md5FbId);
-        if(md5Str != (md5FbId + md5FbId.substring(2,4))) res.send("Invalid Token!!");    
+        if(md5Str != (md5FbId.substring(6,7) + md5FbId + md5FbId.substring(2,4))) res.send("Invalid Token!!");    
 
         var querySpec = {
             query: 'SELECT * FROM r WHERE r.key=@key',
