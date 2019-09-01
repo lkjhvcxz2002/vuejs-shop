@@ -176,9 +176,7 @@ div.card {
 
 .picVoteCount {
   color: purple;
-  font-size: 24px;
-  margin-left: 20px;
-  margin-top: 20px;
+  font-size: 20px;
   text-align: right;
 }
 
