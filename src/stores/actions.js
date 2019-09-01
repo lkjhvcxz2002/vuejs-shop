@@ -25,7 +25,7 @@ export const updateCart = ({
 }, {item, isAdd}) => {
 	// TODO
 	var fbId = window.$cookies.get("fbId") || "testFB";
-	let md5ddd = md5(fbId);
+	let md5ddd = md5(fbId + new Date().getMinutes() + "_+123");
 
   // TODO: Call service
 	commit('UPDATE_CART', {item, isAdd});
