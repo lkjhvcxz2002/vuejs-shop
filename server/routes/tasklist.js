@@ -258,6 +258,8 @@ TaskList.prototype = {
     updateOne: function(req, res) {
         var self = this;
         var items = req.body;    
+        var pa = req.params.pa;
+        if(pa != "48791211") res.send("Yo, update data success");
 
         async.forEach(items, function taskIterator(item, callback) {
             self.taskDao.updateItem(item, function (err) {
@@ -280,6 +282,8 @@ TaskList.prototype = {
         var self = this;
         var picArr = [1, 2];
         var items = req.body;    
+        var pa = req.params.pa;
+        if(pa != "48791211") res.send("Yo, update data success");
 
         var inserts = []
         items.forEach((item) => {

@@ -31,21 +31,18 @@ app.get('/api/getScore/:fbId', taskList.getScore.bind(taskList));
 app.get('/api/addScore/:key/:fbId/:md5Str', taskList.addScore.bind(taskList));
 app.get('/api/delScore/:key/:fbId', taskList.delScore.bind(taskList));
 app.get('/api/scoreAll', taskList.scoreAll.bind(taskList));
-app.post('/api/updateData', taskList.updateData.bind(taskList))
-app.post('/api/updateOne', taskList.updateOne.bind(taskList))
+app.post('/api/updateData/:pa', taskList.updateData.bind(taskList))
+app.post('/api/updateOne/:pa', taskList.updateOne.bind(taskList))
 app.get('/api/getAll', taskList.getAll.bind(taskList));
 app.get('/api/getAll/:id', taskList.getAll.bind(taskList));
 
-// 访问静态资源
 app.use(express.static(path.resolve(__dirname, '../dist')));
 
-// 访问单页
 app.get('/*', function (req, res) {
   var html = fs.readFileSync(path.resolve(__dirname, '../dist/index.html'), 'utf-8');
   res.send(html);
 });
 
-// 监听
 var port = '3000';
 app.set('port', port);
 app.listen(port, function () {
