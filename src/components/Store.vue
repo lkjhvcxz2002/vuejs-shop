@@ -158,7 +158,7 @@ export default {
     changeDisplay(isList) {
       this.displayList = isList;
     },onFilterSet (filterText) {
-      if(filterText) this.products = this.storeProducts.filter(o => o.userName.toLowerCase().indexOf(filterText) != -1);
+      if(filterText) this.products = this.storeProducts.filter(o => o.userName && o.userName.toLowerCase().indexOf(filterText) != -1);
       else this.products = this.storeProducts;
     },seeAll() {
       location.href = "/main";
