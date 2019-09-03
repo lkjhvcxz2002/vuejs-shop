@@ -45,7 +45,7 @@
       <h2 class="ui green button" style="font-size: 20px; cursor: auto">投票說明</h2>
       <div class="ui ordered list" style="margin-top: 60px">
         <div class="item">必須先登入Facebook帳號後才能進行投票 <span class="tiny"> 右上角那個按鈕點下去!</span></div>
-        <div class="item">一個帳號只能投一次 每人投票數量無上限 <span class="tiny"> 歡迎當個狂讚士(ﾟ∀ﾟ)))</span></div>
+        <div class="item">一個帳號只能投一次 每人投票數量無上限 <span class="tiny"> 歡迎當個狂讚士(｡ ∀ ﾟ)))</span></div>
         <div class="item">按一次[我喜歡]是投票 按兩次[我喜歡]是取消投票 <span class="tiny">這應該不用特別說明... 吧?</span></div>
         <div class="item">點一次圖片會放大 圖片再點一次會縮小  <span class="tiny"> 我忘記幫圖片留邊了 (｡A｡)</span></div>
         <div class="item">大圖檔讀取比較久 請耐心等待~  <span class="tiny"> 歡迎捐錢給我增加雲端圖床的頻寬 (誤</span></div>
@@ -132,7 +132,7 @@ export default {
     if(!fbId && avail) location.href="/";
     this.targetId = this.$route.query.id;
     let url = "/api/getAll" + (this.targetId ? "/" + this.targetId : "");
-    axios.get(url).then(res => {
+    axios.get(url, {timeout: 8000}).then(res => {
       if(res && res.data && res.data.length > 0) {
         this.storeProducts = shuffle(res.data);
         this.products = this.storeProducts;
@@ -145,9 +145,14 @@ export default {
 
       this.isProductLoading = false;
     }).catch(err => {
-      this.storeProducts = jsonArr;
-      this.products = jsonArr;
-      alert("取得資料失敗，請回報主辦單位: " + err)
+      if(err && err.message.indexOf("timeout") != -1) {
+        alert("伺服器目前忙碌中，請稍等一下再嘗試。或使用較穩定的網路(如Wifi、桌機)進行連線。")
+      } else {
+          this.storeProducts = jsonArr;
+          this.products = jsonArr;
+          alert("取得資料失敗，請回報主辦單位: " + JSON.stringify(err));
+      }
+
       this.isProductLoading = false;
     })
 
