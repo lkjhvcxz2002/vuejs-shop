@@ -79,29 +79,6 @@ TaskList.prototype = {
         });
     },
 
-    getScore: function(req, res) {
-        var self = this;
-        var fbId = req.params.fbId;
-
-        var querySpec = {
-            query: 'SELECT items FROM items JOIN likedList IN items.likedList WHERE likedList IN (@fbId)',
-            parameters: [{
-                name: '@fbId',
-                value: fbId
-            }]
-        };
-
-        self.taskDao.find(querySpec, function (err, items) {
-            if (err) {
-                console.log(JSON.stringify(err));
-                throw (err);
-            }
-
-            var objArr = items.map(o => {return o.items});
-            res.send(objArr.map(o => {return o["key"]}));
-        });
-    },
-
     addScore: function(req, res) {
         var self = this;
         var key = req.params.key;
@@ -278,6 +255,42 @@ TaskList.prototype = {
             }
         });
     },
+    updateOneScore: function(req, res) {
+        var self = this;
+        var item = req.body;    
+        var pa = req.params.pa;
+        if(pa != "48791211") res.send("Yo, update data success");
+
+        console.log(item);
+        var key = item["key"];
+        var querySpec = {
+            query: 'SELECT * FROM c WHERE c.key = @key',
+            parameters: [{
+                name: '@key',
+                value: key
+            }]
+        };
+
+        self.taskDao.find(querySpec, function (err, items) {
+            if (err) {
+                console.log(JSON.stringify(err));
+                throw (err);
+            }
+
+            let _oriItem = items[0];
+            if(_oriItem) {
+                _oriItem["scoreMap"] = item["scoreMap"];
+                self.taskDao.updateItem(_oriItem, function (err) {
+                    if (err) {
+                        console.log(JSON.stringify(err));
+                        throw (err);
+                    }
+        
+                    res.send("Update one score success");
+                });
+            }
+        });
+    },
     updateData: function(req, res) {
         var self = this;
         var picArr = [1, 2];
@@ -323,6 +336,47 @@ TaskList.prototype = {
             } else {
                 res.send("Update Data successful!!");
             }
+        });
+    },
+    getScore: function(req, res) {
+        var self = this;
+        var id = req.params.key;
+        var querySpec = {};
+        
+        if(id) {
+            var querySpec = {
+                query: 'SELECT * FROM c WHERE c.key = @key',
+                parameters: [{
+                    name: '@key',
+                    value: id
+                }]
+            };
+        } else {
+            var querySpec = {
+                query: 'SELECT * FROM c'
+            };
+        }
+
+        self.taskDao.find(querySpec, function (err, items) {
+            if (err) {
+                console.log(JSON.stringify(err));
+                throw (err);
+            }
+
+            let _result = items[0];
+            if(!_result){ res.send("404"); return;}
+            let result = {
+                "id": _result.accountId,
+                "key": _result.key,
+                "count": _result.count,
+                "score": _result.scoreMap,
+                "group": _result.group,
+                "thumb": _result.thumb,
+                "pic": _result.pic,
+                "name": _result.userName
+            }
+
+            res.send(result);
         });
     }
 };

@@ -61,14 +61,10 @@ import {
   mapActions
 } from 'vuex';
 import Icon from 'vue-awesome'
-import VuePureLightbox from 'vue-pure-lightbox'
-import Lightbox from 'vue-my-photos'
 
 export default {
   components: {
     'v-icon': Icon,
-    'VuePureLightbox': VuePureLightbox,
-    'Lightbox': Lightbox,
   },
   data() {
     return {
@@ -100,7 +96,7 @@ export default {
       };
       this.updateCart(order);
     },
-    showLightbox(src) {
+    showLightbox() {
       this.$events.fire('image-open', true)
       this.show = true;
     },
