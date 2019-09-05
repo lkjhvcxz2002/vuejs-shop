@@ -34,12 +34,27 @@
 import {
   mapActions
 } from 'vuex';
+
+
+
 export default {
   data() {
     return {
       email: '',
       password: '',
       isLoading: false
+    }
+  },
+  mounted() {
+    let encryptor = window.encryptor;
+    let _reviewer = this.$route.params.reviewer;
+
+    if(!_reviewer) {
+      alert("錯誤網址，請輸入正確評分網址")
+    } else {
+      let reviewer = encryptor.decrypt(_reviewer);
+      window.$cookies.set("reviewer", reviewer);
+      location.href = "/scoreList";
     }
   },
   methods: {

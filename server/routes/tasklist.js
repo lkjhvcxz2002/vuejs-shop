@@ -280,6 +280,7 @@ TaskList.prototype = {
             let _oriItem = items[0];
             if(_oriItem) {
                 _oriItem["scoreMap"] = item["scoreMap"];
+                _oriItem["reviewersScore"] = item["reviewersScore"];
                 self.taskDao.updateItem(_oriItem, function (err) {
                     if (err) {
                         console.log(JSON.stringify(err));
@@ -338,6 +339,21 @@ TaskList.prototype = {
             }
         });
     },
+    getScoreList: function(req, res) {
+        var self = this;
+        var querySpec = {
+            query: 'SELECT c.accountId, c.count, c["group"], c.key, c.thumb, c.userName, c.scoreMap FROM c'
+        };
+
+        self.taskDao.find(querySpec, function (err, items) {
+            if (err) {
+                console.log(JSON.stringify(err));
+                throw (err);
+            }
+
+            res.send(items);
+        });
+    },
     getScore: function(req, res) {
         var self = this;
         var id = req.params.key;
@@ -369,11 +385,11 @@ TaskList.prototype = {
                 "id": _result.accountId,
                 "key": _result.key,
                 "count": _result.count,
-                "score": _result.scoreMap,
                 "group": _result.group,
                 "thumb": _result.thumb,
                 "pic": _result.pic,
-                "name": _result.userName
+                "name": _result.userName,
+                "scoreMap": _result.scoreMap
             }
 
             res.send(result);

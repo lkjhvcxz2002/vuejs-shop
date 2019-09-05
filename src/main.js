@@ -10,12 +10,16 @@ import './assets/styles/app.scss'
 
 import App from './App.vue';
 
+var key = process.env.SECRET_KEY || '4879121248791212';
+ 
+// Create an encryptor:
+window.encryptor = require('simple-encryptor')(key);
+
 Vue.use(VueRouter);
 Vue.use(VueEvents);
 Vue.use(VueCookies)
 
 firebaseListener(authStatusChange);
-
 
 const router = new VueRouter({
 	mode: 'history',
@@ -23,7 +27,7 @@ const router = new VueRouter({
 });
 
 // router.beforeEach((to, from, next) => {
-//     if (to.onlyGuest && store.getters.isLoggedIn) {
+//     if (to.onlyReviewer && window.$cookies.get("reviewer") == null) {
 //         next('/');
 //     } else {
 //         next();

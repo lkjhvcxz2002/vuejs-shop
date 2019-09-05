@@ -35,6 +35,7 @@ app.post('/api/updateOne/:pa', taskList.updateOne.bind(taskList))
 app.post('/api/updateOneScore/:pa', taskList.updateOneScore.bind(taskList))
 app.get('/api/getAll', taskList.getAll.bind(taskList));
 app.get('/api/getAll/:id', taskList.getAll.bind(taskList));
+app.get('/api/getScoreList', taskList.getScoreList.bind(taskList));
 app.get('/api/getScore/:key', taskList.getScore.bind(taskList));
 
 // var scoresDao = new TaskDao(docDbClient, config.databaseId, config.ScoresColId);

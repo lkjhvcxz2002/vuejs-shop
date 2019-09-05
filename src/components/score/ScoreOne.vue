@@ -3,23 +3,36 @@
   <div class="row text-center loadingImage">
     <rotate-loader :loading="isImageLoading || isProductLoading" :color="loaderColor" :size="loaderSize"></rotate-loader>
   </div>
-  <div>
-    <h1> <v-icon name="heart"/> 編號: {{ssData.key}}, 姓名: {{ssData.name}}</h1>
+  <div class="row" v-if="!isProductLoading">
+    <button class="ui small primary button right floated" v-on:click="backToList()">
+      <v-icon name="arrow-left" />
+      <span style="vertical-align: middle;font-size: 16px;">&nbsp;  返回列表</span>
+    </button>
+    <button class="ui violet button right floated" v-on:click="seeInstruction()"  >
+      <v-icon name="edit" />
+      <span style="vertical-align: middle;font-size: 16px;">&nbsp;  評分操作說明</span>
+    </button>
+  </div>
+  <div style="margin-top: 15px">
+    <div v-if="!isProductLoading">
+      <h3> 編號: {{ssData.key}}, 姓名: {{ssData.name}}</h3>
+      <h5 style="color: red">組別: {{ssData.group}} </h5>
+    </div>
     <div class="col-md-5">
-      <img :key="ssData.key" class="thumbnail-image card-img intrinsic-item p-3"
+      <img :key="ssData.key" class="card-img p-3" style="margin-left: -20px"
          @click="showLightbox()"  
          :src="ssData.pic" @load="loaded" />
-      <div class="lightbox" v-if="show" @click="closeLightbox()"  >
+      <div class="lightbox" v-if="showLightBox" @click="closeLightbox()"  >
         <img class="lightbox-image" @load="loaded" :src="ssData.pic" />
       </div>
     </div>
-    <div class="col-md-7" style="border: 1px white solid">
+    <div class="col-md-7" style="border: 1px white solid" v-if="!isProductLoading">
       <!-- Auto -->
       <div class="row" style="margin-bottom: 20px">
         <div class="form-group">
           <p class="manuTitle">自動配分</p>
-          <div class="ui buttons">
-            <button class="ui button wide" @click="autoScore(0.2)">低</button>
+          <div class="ui buttons" style="height: 50px">
+            <button class="ui button wide" @click="autoScore(0.18)">低</button>
             <button class="ui button wide" @click="autoScore(0.35)">中低</button>
             <button class="ui button wide" @click="autoScore(0.5)">普通</button>
             <button class="ui button wide" @click="autoScore(0.65)">中高</button>
@@ -40,16 +53,17 @@
       <div class="row" style="margin-bottom: 20px;">
         <p class="manuTitle col-md-12" style="margin-left: -15px">評審講評 <span class="lead">(非必填)</span></p>
         <div class="col-md-7">
-          <textarea class="form-control" rows="4"/>
+          <textarea class="form-control" rows="4" v-model="remark"/>
         </div>
-        <div class="col-md-2 col-md-offset-3">
+        <div class="col-md-2 col-md-offset-3" style="padding-left: 5px;">
           <p class="manuTitle" >總分</p>
           <input class="ui input massive" style="width: 50px" v-model="getTotal" disabled>
         </div>
       </div>
       <div class="row">
         <div class="col-md-12">
-          <button class="ui green button pull-right" v-on:click="submit()" style="height: 35px; margin-left: 20px" >送出</button>
+          <button class="ui green button pull-right" v-on:click="submit()" v-if="!isRenewScore" style="height: 35px; margin-left: 20px" >送出</button>
+          <button class="ui violet button pull-right" v-on:click="resubmit()" v-if="isRenewScore" style="height: 35px; margin-left: 20px" >更新分數</button>
           <button class="ui red button pull-right" v-on:click="clear()" style="height: 35px;" >重置</button>
         </div>
       </div>
@@ -58,10 +72,18 @@
     </div>
   </div>
 
-  <SweetModal ref="modal">
+<SweetModal ref="modal">
     <div class="ui centered">
-      <h2 class="ui green button" style="font-size: 20px; cursor: auto">投票說明</h2>
-
+      <h2 class="ui green button" style="font-size: 20px; cursor: auto">評分說明</h2>
+      <div class="ui ordered list" style="margin-top: 60px">
+        <div class="item">建議在電腦螢幕前操作評分系統 手機在顯示橫版圖片會比較模糊 </div>
+        <div class="item">點一次圖片會放大 圖片再點一次會縮小 </div>
+        <div class="item">有些圖片可能會有自轉90度的狀況 可以右鍵點圖片[在新分頁中開啟]即可解決 </div>
+        <div class="item">各個組別所顯示的評分標準不一樣 但加總起來都會是70分 </div>
+        <div class="item">如果功能有問題 請嘗試重新整理頁面</div>
+        <div class="item">如果還是有問題 請畫面截圖聯絡<a target="_blank" href="https://www.facebook.com/profile.php?id=100012111157041">主辦人</a>
+        </div>
+      </div>
     </div>
   </SweetModal>
 </div>
@@ -74,8 +96,10 @@ import Icon from 'vue-awesome'
 import { SweetModal } from 'sweet-modal-vue'
 import RotateLoader from 'vue-spinner/src/RotateLoader.vue';
 import axios from 'axios';
+import scoreOrder from '../../../data/order.json'
 
 // const avail = window.$cookies.get("fbId") != null;
+const _reviewer = window.$cookies.get("reviewer");
 
 let reviewStanadards = {
   "1": {
@@ -89,7 +113,7 @@ let reviewStanadards = {
     "畫面構圖": 15,
     "妝容造型": 15,
     "服裝風格": 10,
-    "主題性": 10
+    "主題性　": 10
   }
 }
 
@@ -107,6 +131,27 @@ let _data = {
 
 let randomNum = function(double) {
   return (Math.random() * 0.35 * double) + double;
+};
+
+let sendOutResult = function(data) {
+  let url = "/api/updateOneScore/" + process.env.Pass_Word;
+  axios.post(url, data).then(res => {
+    alert("評分成功!!")
+    let nextKey = scoreOrder.indexOf(data["key"]) + 1;
+    location.href = "/scoreOne/" + scoreOrder[nextKey];
+  }).catch(err => {
+    alert("送出結果失敗!");
+  });
+};
+
+let calculateTotal = function(data) {
+  data.reviewersScore = 0;
+  let keys = Object.keys(data.scoreMap);
+  keys.forEach(key => {
+    data.reviewersScore += data.scoreMap[key].total;
+  });
+
+  data.reviewersScore = data.reviewersScore / 3;
 }
 
 export default {
@@ -116,10 +161,12 @@ export default {
       loaderSize: "50px",
       isImageLoading: false,
       isProductLoading: true,
-      show: false,
+      showLightBox: false,
+      isRenewScore: false,
+      remark: "",
       ssData: _data,
       reviewer: "林妤綾",
-      reviewStanadard: reviewStanadards["1"],
+      reviewStanadard: reviewStanadards["2"],
       valuesObj: {},
       totalScore: 0
     }
@@ -146,12 +193,22 @@ export default {
     }
   },
   mounted() {
+    this.reviewer = _reviewer ? _reviewer : this.reviewer;
+
     this.targetId = this.$route.params.key;
     let url = "/api/getScore" + (this.targetId ? "/" + this.targetId : "");
     axios.get(url).then(res => {
       if(res && res.data ) {
         this.ssData = res.data;
       }
+
+      // Get Score result if have
+      if(this.ssData.scoreMap && this.ssData.scoreMap[this.reviewer] != null) {
+        this.isRenewScore = true;
+        this.valuesObj = this.ssData.scoreMap[this.reviewer].obj;   
+        this.remark = this.ssData.scoreMap[this.reviewer].remark;
+      }
+      // Get Group and ReviewStandard
       let standardGroup = this.ssData.group.indexOf("Cosplay") == -1 ? "1" : "2";
       this.reviewStanadard = reviewStanadards[standardGroup];
     }).catch(err => {
@@ -161,6 +218,11 @@ export default {
     this.$events.$on('image-open', eventData => this.openLoading(eventData));
   },
   methods: {
+    backToList() {
+      location.href = "/scoreList";
+    },seeInstruction() {
+      this.$refs.modal.open();
+    },
     changeDisplay(isList) {
       this.displayList = isList;
     },openLoading(eventData) {
@@ -169,12 +231,12 @@ export default {
       this.$refs.modal.open();
     },showLightbox() {
       this.isImageLoading = true;
-      this.show = true;
+      this.showLightBox = true;
     },loaded() {
       this.isProductLoading = false;
       this.isImageLoading = false;
     },closeLightbox() {
-      this.show = false;
+      this.showLightBox = false;
     },autoScore(per) {
       let tempValuesObj = {};
       let okeys = Object.keys(this.reviewStanadard);
@@ -193,22 +255,35 @@ export default {
     },submit() {
       let thisScoreMap = {
         "obj": this.valuesObj,
+        "remark": this.remark,
         "total": this.totalScore
       }
 
       this.ssData.scoreMap = this.ssData.scoreMap ? this.ssData.scoreMap : {};
       this.ssData.scoreMap[this.reviewer] = thisScoreMap;
-      let url = "/api/updateOneScore/" + process.env.Pass_Word;
-      axios.post(url, this.ssData).then(res => {
-        alert("成功!!")
-      }).catch(err => {
-        alert("送出結果失敗!");
-      })
+
+      // calculate total
+      calculateTotal(this.ssData);
+      sendOutResult(this.ssData);
+    },resubmit() {
+      if(window.confirm("您即將覆蓋上次的評分，是否確認?")) {
+        let thisScoreMap = {
+          "obj": this.valuesObj,
+          "remark": this.remark,
+          "total": this.totalScore
+        }
+        this.ssData.scoreMap[this.reviewer] = thisScoreMap;
+
+        // calculate total
+        calculateTotal(this.ssData);
+        sendOutResult(this.ssData);
+      }
     }
   }
 }
 </script>
 
+<style src="vue-pure-lightbox/dist/VuePureLightbox.css"></style>
 <style>
 .scoreNumInput {
   margin-left: 50%;
@@ -228,6 +303,7 @@ export default {
 
 button.wide {
   width: 35%;
+  border: 1px black solid !important;
 }
 
 .thumbnail-image {
@@ -288,6 +364,16 @@ button.wide {
   @media (max-width: 500.98px) {
     button.wide {
       width: 25%;
+      border: 1px black solid;
+    }
+
+    .lightbox-image {
+      display: block;
+      height: auto;
+      width: 100%;
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: 50% 50%;
     }
   }
 </style>
