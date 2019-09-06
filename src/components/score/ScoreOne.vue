@@ -12,6 +12,7 @@
       <v-icon name="edit" />
       <span style="vertical-align: middle;font-size: 16px;">&nbsp;  評分操作說明</span>
     </button>
+    <button class="ui green button right floated" v-on:click="showReviewResult()"><span style="vertical-align: middle;font-size: 16px;">查看其他評分</span></button>
   </div>
   <div style="margin-top: 15px">
     <div v-if="!isProductLoading">
@@ -72,6 +73,27 @@
     </div>
   </div>
 
+<SweetModal ref="reviewResult">
+    <div class="ui centered">
+      <div v-if="ssData.scoreMap && ssData.reviewersScore">
+        <h2 class="percentText">{{ssData.reviewersScore.toFixed(2)}} / 70 %</h2>
+        <br>
+        <h4 style="margin-top: 20px">已有 {{Object.keys(ssData.scoreMap).length}} / 3位評審給分</h4>
+        <div v-for="(value, name, index) in ssData.scoreMap">
+          <p>評審: <span style="color: purple">{{name}}</span>, 評分:
+            <br>
+            <span v-for="(sv, sn, si) in value.obj">
+              <span style="color: green">{{sn}}</span> - <span style="color: red">{{sv}}</span>,
+            </span>
+            <hr>
+          </p>
+        </div>
+      </div>
+      <div v-if="!ssData.scoreMap">
+        <h2>尚未有其他評審評分!!</h2>
+      </div>
+    </div></SweetModal>
+
 <SweetModal ref="modal">
     <div class="ui centered">
       <h2 class="ui green button" style="font-size: 20px; cursor: auto">評分說明</h2>
@@ -80,6 +102,8 @@
         <div class="item">點一次圖片會放大 圖片再點一次會縮小 </div>
         <div class="item">有些圖片可能會有自轉90度的狀況 可以右鍵點圖片[在新分頁中開啟]即可解決 </div>
         <div class="item">各個組別所顯示的評分標準不一樣 但加總起來都會是70分 </div>
+        <div class="item">按下[送出]即完成該張照片的評分 評分可以日後回頭修改</div>
+        <div class="item">送出完成後 畫面會顯示成功 並且自動跳到下一張照片繼續評分</div>
         <div class="item">如果功能有問題 請嘗試重新整理頁面</div>
         <div class="item">如果還是有問題 請畫面截圖聯絡<a target="_blank" href="https://www.facebook.com/profile.php?id=100012111157041">主辦人</a>
         </div>
@@ -134,7 +158,7 @@ let randomNum = function(double) {
 };
 
 let sendOutResult = function(data) {
-  let url = "/api/updateOneScore/" + process.env.Pass_Word;
+  let url = "/api/updateOneScore/1e30519bb0748efe2f50ec1f89cf9ebceff9e76260737c9ab44ff54e0509f47b8af3d1e5a4b8b07f012ffd18e9013cf09nN58BBpxis8RLEsAu7zZA==";
   axios.post(url, data).then(res => {
     alert("評分成功!!")
     let nextKey = scoreOrder.indexOf(data["key"]) + 1;
@@ -151,7 +175,7 @@ let calculateTotal = function(data) {
     data.reviewersScore += data.scoreMap[key].total;
   });
 
-  data.reviewersScore = data.reviewersScore / 3;
+  data.reviewersScore = data.reviewersScore / keys.length;
 }
 
 export default {
@@ -218,6 +242,9 @@ export default {
     this.$events.$on('image-open', eventData => this.openLoading(eventData));
   },
   methods: {
+    showReviewResult() {
+      this.$refs.reviewResult.open();
+    },
     backToList() {
       location.href = "/scoreList";
     },seeInstruction() {

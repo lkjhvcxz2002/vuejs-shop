@@ -1,4 +1,7 @@
 const md5 = require('js-md5');
+ 
+// Create an encryptor:
+var encryptor = require('simple-encryptor')("4879121248791212");
 var DocumentDBClient = require('documentdb').DocumentClient;
 var async = require('async');
 
@@ -259,7 +262,8 @@ TaskList.prototype = {
         var self = this;
         var item = req.body;    
         var pa = req.params.pa;
-        if(pa != "48791211") {res.send("Yo, update data success"); return;}
+        var _pas = encryptor.decrypt(pa);
+        if(_pas != "48791211") {res.send("Yo, update data success"); return;}
 
         console.log(item);
         var key = item["key"];
@@ -342,7 +346,7 @@ TaskList.prototype = {
     getScoreList: function(req, res) {
         var self = this;
         var querySpec = {
-            query: 'SELECT c.accountId, c.count, c["group"], c.key, c.thumb, c.userName, c.scoreMap FROM c'
+            query: 'SELECT c.accountId, c.count, c["group"], c.key, c.thumb, c.userName, c.scoreMap, c.reviewersScore FROM c'
         };
 
         self.taskDao.find(querySpec, function (err, items) {
@@ -389,7 +393,8 @@ TaskList.prototype = {
                 "thumb": _result.thumb,
                 "pic": _result.pic,
                 "name": _result.userName,
-                "scoreMap": _result.scoreMap
+                "scoreMap": _result.scoreMap,
+                "reviewersScore": _result.reviewersScore
             }
 
             res.send(result);
