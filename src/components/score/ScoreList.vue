@@ -71,7 +71,8 @@
   <SweetModal ref="modal">
     <div class="ui centered">
       <h2 class="ui green button" style="font-size: 20px; cursor: auto">操作說明</h2>
-      <div class="ui ordered list" style="margin-top: 60px">
+      <h2>歡迎來到評分系統，{{reviewer}} 老師~</h2>
+      <div class="ui ordered list" style="margin-top: 30px">
         <div class="item" v-if="isMobile">建議在電腦螢幕前操作評分系統 手機在顯示橫版圖片會比較模糊 </div>
         <div class="item" v-if="isMobile">左右滑動列表可以觀看更多資訊</div>
         <div class="item">點擊[前往評分]就可以開始評分</div>
@@ -115,12 +116,9 @@ export default {
   mounted() {
     const _reviewer = window.$cookies.get("reviewer");
     if(_reviewer) {
-      if(_reviewer.indexOf("十") != -1) {
-        alert("歡迎來到評分系統，十九老師 ~");
-      } else {
-        alert("歡迎來到評分系統，" + _reviewer + "~");
-      }
       this.reviewer = _reviewer ? _reviewer : this.reviewer;
+    } else {
+      location.href = "/"
     }
 
     let url = "/api/getScoreList";
