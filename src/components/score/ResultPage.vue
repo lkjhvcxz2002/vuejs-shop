@@ -21,7 +21,7 @@
             尚未公布
           </td>
           <td v-on:click="showDetail(idol, index)" style="cursor: pointer">
-            <p class="resultTest">網路投票: <span class="redText">(尚未完成)</span> / 30% <span class="tinyText">票數: {{idol.count}}, 排名: {{idol.countOrder}}</span></p>
+            <p class="resultTest">網路投票: <span class="redText">{{idol.countScore}}</span> / 30% <span class="tinyText">票數: {{idol.count}}, 排名: {{idol.countOrder}}</span></p>
             <p class="resultTest">評審評分: <span class="redText">(尚未完成))</span> / 70%</p>
             <div v-if="idol.isShowDetail">
               <div v-for="(value, name, index) in idol.scoreMap">

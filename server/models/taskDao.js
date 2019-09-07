@@ -84,20 +84,12 @@ TaskDao.prototype = {
     updateItemsCount: function(item, callback) {
         var self = this;
 
-        self.getItem(item["key"], function (err, doc) {
+        self.client.replaceDocument(item._self, item, function (err, replaced) {
             if (err) {
                 callback(err);
 
             } else {
-                doc["countOrder"] = item["countOrder"];
-                self.client.replaceDocument(doc._self, doc, function (err, replaced) {
-                    if (err) {
-                        callback(err);
-
-                    } else {
-                        callback(null, replaced);
-                    }
-                });
+                callback(null, replaced);
             }
         });
     },

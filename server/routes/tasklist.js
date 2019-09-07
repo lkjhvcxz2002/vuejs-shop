@@ -410,7 +410,7 @@ TaskList.prototype = {
         var self = this;
 
         var querySpec = {
-            query: 'SELECT c.key, c.count FROM c'
+            query: 'SELECT * FROM c'
         };
 
         self.taskDao.find(querySpec, function (err, items) {

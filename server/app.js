@@ -37,7 +37,7 @@ app.get('/api/getAll', taskList.getAll.bind(taskList));
 app.get('/api/getAll/:id', taskList.getAll.bind(taskList));
 app.get('/api/getScoreList', taskList.getScoreList.bind(taskList));
 app.get('/api/getScore/:key', taskList.getScore.bind(taskList));
-// app.get('/api/updateCountOrder', taskList.updateCountOrder.bind(taskList));
+app.get('/api/updateCountOrder', taskList.updateCountOrder.bind(taskList));
 
 // var scoresDao = new TaskDao(docDbClient, config.databaseId, config.ScoresColId);
 // var scoreList = new TaskList(scoresDao);
