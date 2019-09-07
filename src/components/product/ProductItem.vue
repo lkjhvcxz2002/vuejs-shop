@@ -48,7 +48,7 @@
           </button>
         </p>
       </div>
-      <div class="row" v-if="open">
+      <div class="row">
         <span class="picVoteCount">已經獲得 {{count}} 票 </span>
       </div>
     </div>

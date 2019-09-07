@@ -27,15 +27,14 @@
         </li>
         <li v-on:click="toRegister()" tag="li" style="cursor:pointer" class="nav-item" active-class="active">
           <a class="nav-link">報名參加 
-            <span class="span-remark" v-if="!isOpen">(08/31截止)</span>
-            <span class="span-remark" v-if="isOpen" style="color: rgb(0, 0, 0);font-size: 12px;">(已截止)</span>
+            <span class="span-remark" style="color: rgb(0, 0, 0);font-size: 12px;">(已截止)</span>
           </a>
         </li>
         <router-link :to="voteLink" tag="li" v-if="isOpen && !avail" class="nav-item" style="padding: 2px;">
           <a class="nav-link" style="color: blue">投票登入</a>
         </router-link>
-        <li class="nav-item" v-if="!isOpen">
-          <a class="nav-link" style="color: #5f5f5f;margin-top: 2px;">投票區(09/01開放)</a>
+        <li v-on:click="toResult()" v-if="isResult" style="cursor:pointer" class="nav-item">
+          <a class="nav-link">評選結果</a>
         </li>
       </ul>
     </div>
@@ -44,8 +43,8 @@
 </template>
 
 <script>
-const isOpen = new Date().getTime() > 1567267200000;
-// const isOpen = new Date().getTime() > 1567261500000;
+const isOpen = new Date().getTime() > 1567267200000 && new Date().getTime() < 1567871999000
+const isResult = new Date().getTime() > 1567871999000;
 const avail = window.$cookies.get("fbId") != null;
 import {
   mapActions, mapGetters
@@ -57,7 +56,8 @@ export default {
       isOpen: isOpen,
       targetId: '',
       voteLink: "/vote",
-      avail: avail
+      avail: avail,
+      isResult: isResult
     }
   },
   computed: {
@@ -88,6 +88,9 @@ export default {
     toRegister() {
         let registerUrl ="https://docs.google.com/forms/d/1LRwxeKCBumzFuQ-lOlxYJbMdBCvSSB2EbgV_WDJshiw/edit";
         window.open(registerUrl, "_blank");
+    },
+    toResult() {
+      location.href = "/resultPage"
     },
     toHome() {
       location.href = "/main"

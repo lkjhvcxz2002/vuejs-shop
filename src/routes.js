@@ -7,6 +7,7 @@ import Register from './components/auth/Register.vue';
 import FBLogin from './components/auth/Register.vue';
 import ScoreOne from './components/score/ScoreOne.vue';
 import ScoreList from './components/score/ScoreList.vue';
+import ResultPage from './components/score/ResultPage.vue';
 
 export const routes = [
 	{path: '/', component: Store, name: 'mainpage'},
@@ -20,5 +21,6 @@ export const routes = [
 	{path: '/register', component: Register, name: 'register', onlyGuest: true},
 	{path: '/scoreList', component: ScoreList, name: 'scoreList'},
 	{path: '/scoreOne/:key', component: ScoreOne, name: 'scoreOne'},
+	{path: '/resultPage', component: ResultPage, name: 'resultPage'},
 	{path: '*', redirect: '/' }
 ];

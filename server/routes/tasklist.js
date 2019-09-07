@@ -352,7 +352,7 @@ TaskList.prototype = {
     getScoreList: function(req, res) {
         var self = this;
         var querySpec = {
-            query: 'SELECT c.accountId, c.count, c["group"], c.key, c.thumb, c.userName, c.scoreMap, c.reviewersScore FROM c'
+            query: 'SELECT c.accountId, c.count, c["group"], c.key, c.thumb, c.userName, c.scoreMap, c.reviewersScore, c.countOrder FROM c'
         };
 
         self.taskDao.find(querySpec, function (err, items) {
@@ -404,6 +404,41 @@ TaskList.prototype = {
             }
 
             res.send(result);
+        });
+    },
+    updateCountOrder: function(req, res) {
+        var self = this;
+
+        var querySpec = {
+            query: 'SELECT c.key, c.count FROM c'
+        };
+
+        self.taskDao.find(querySpec, function (err, items) {
+            if (err) {
+                console.log(JSON.stringify(err));
+                throw (err);
+            }
+
+            items.sort((a, b) => { return b.count - a.count});
+            let _count = 1;
+            items.forEach(item => item.countOrder = _count++);
+
+            async.forEach(items, function taskIterator(item, callback) {
+                console.log("update: " + item["key"]);
+                self.taskDao.updateItemsCount(item, function (err) {
+                    if (err) {
+                        callback(err);
+                    } else {
+                        callback(null);
+                    }
+                });
+            }, function goHome(err) {
+                if (err) {
+                    throw JSON.stringify(err);
+                } else {
+                    res.send("Count Order successfully!!");
+                }
+            });
         });
     }
 };

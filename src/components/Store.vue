@@ -71,7 +71,7 @@ import FilterBar from './product/FilterBar'
 import axios from 'axios';
 import { setTimeout } from 'timers';
 
-const isOpen = new Date().getTime() > 1567267200000;
+const isOpen = new Date().getTime() > 1567267200000 && new Date().getTime() < 1567871999000;
 // const isOpen = new Date().getTime() > 1567261500000;
 const avail = window.$cookies.get("fbId") != null;
 

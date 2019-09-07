@@ -81,6 +81,26 @@ TaskDao.prototype = {
             }
         });
     },
+    updateItemsCount: function(item, callback) {
+        var self = this;
+
+        self.getItem(item["key"], function (err, doc) {
+            if (err) {
+                callback(err);
+
+            } else {
+                doc["countOrder"] = item["countOrder"];
+                self.client.replaceDocument(doc._self, doc, function (err, replaced) {
+                    if (err) {
+                        callback(err);
+
+                    } else {
+                        callback(null, replaced);
+                    }
+                });
+            }
+        });
+    },
 
     getItem: function (itemId, callback) {
         var self = this;
