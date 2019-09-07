@@ -171,11 +171,15 @@ let sendOutResult = function(data) {
 let calculateTotal = function(data) {
   data.reviewersScore = 0;
   let keys = Object.keys(data.scoreMap);
+  let validCount = 0;
   keys.forEach(key => {
-    data.reviewersScore += data.scoreMap[key].total;
+    if(data.scoreMap[key].total && data.scoreMap[key].total != 0) {
+      validCount += 1;
+      data.reviewersScore += data.scoreMap[key].total;
+    }
   });
 
-  data.reviewersScore = data.reviewersScore / keys.length;
+  data.reviewersScore = data.reviewersScore / validCount;
 }
 
 export default {

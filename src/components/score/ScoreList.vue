@@ -29,7 +29,10 @@
             </div>
           </td>
           <td style="padding-top: 20px">
-            <span class="bg-primary text-white" v-if="idol.isReviewed">您以評分完成</span>
+            <span class="bg-primary text-white" v-if="idol.isReviewed">
+              您以評分完成
+              <span class="bg-danger text-white" v-if="idol.scoreMap[reviewer].total == 0">，但給予的總分為0</span>
+            </span>
             <span class="bg-secondary  text-white" v-if="!idol.isReviewed">尚未評分</span>
           </td>
           <td v-on:click="showDetail(idol, index)" style="cursor: pointer">
@@ -38,11 +41,14 @@
               <h4>已有 {{Object.keys(idol.scoreMap).length}} / 3位評審給分</h4>
               <div v-if="idol.isShowDetail">
                 <div v-for="(value, name, index) in idol.scoreMap">
-                  <p>評審: <span style="color: purple">{{name}}</span>, 評分:
+                  <p>評審: <span style="color: purple">{{name}}</span>, 評分: <span style="color: red">{{value.total}}</span>
                     <br>
-                    <span v-for="(sv, sn, si) in value.obj">
-                      <span style="color: green">{{sn}}</span> - <span style="color: red">{{sv}}</span>,
+                    <span v-if="value.total > 0">
+                      <span v-for="(sv, sn, si) in value.obj">
+                        <span style="color: green">{{sn}}</span> - <span style="color: red">{{sv}}</span>,
+                      </span>
                     </span>
+                    <span v-if="value.total == 0" style="color: red">(該評審未給分數)</span>
                     <hr>
                   </p>
                 </div>
