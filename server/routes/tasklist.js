@@ -267,6 +267,7 @@ TaskList.prototype = {
 
         console.log(item);
         var key = item["key"];
+        var lastScorer = item["lastScorer"];
         var querySpec = {
             query: 'SELECT * FROM c WHERE c.key = @key',
             parameters: [{
@@ -283,7 +284,12 @@ TaskList.prototype = {
 
             let _oriItem = items[0];
             if(_oriItem) {
-                _oriItem["scoreMap"] = item["scoreMap"];
+                if(!_oriItem["scoreMap"]) {
+                    _oriItem["scoreMap"] = item["scoreMap"];
+                } else {
+                    _oriItem["scoreMap"][lastScorer] = item["scoreMap"][lastScorer];
+                }
+                
                 _oriItem["reviewersScore"] = item["reviewersScore"];
                 self.taskDao.updateItem(_oriItem, function (err) {
                     if (err) {

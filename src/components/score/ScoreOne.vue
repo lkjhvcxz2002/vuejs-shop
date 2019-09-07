@@ -280,6 +280,8 @@ export default {
     },clear() {
       this.valuesObj = {};
     },submit() {
+      if(!this.totalScore) { alert("請確認給予分數後再按送出"); return;}
+
       let thisScoreMap = {
         "obj": this.valuesObj,
         "remark": this.remark,
@@ -288,11 +290,14 @@ export default {
 
       this.ssData.scoreMap = this.ssData.scoreMap ? this.ssData.scoreMap : {};
       this.ssData.scoreMap[this.reviewer] = thisScoreMap;
+      this.ssData.lastScorer = this.reviewer;
 
       // calculate total
       calculateTotal(this.ssData);
       sendOutResult(this.ssData);
     },resubmit() {
+      if(!this.totalScore) { alert("請確認給予分數後再按送出"); return;}
+
       if(window.confirm("您即將覆蓋上次的評分，是否確認?")) {
         let thisScoreMap = {
           "obj": this.valuesObj,
@@ -300,6 +305,7 @@ export default {
           "total": this.totalScore
         }
         this.ssData.scoreMap[this.reviewer] = thisScoreMap;
+        this.ssData.lastScorer = this.reviewer;
 
         // calculate total
         calculateTotal(this.ssData);
