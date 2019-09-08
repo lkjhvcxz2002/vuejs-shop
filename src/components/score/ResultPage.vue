@@ -86,12 +86,7 @@ export default {
     'filter-bar': FilterBar,
   },
   mounted() {
-    const _reviewer = window.$cookies.get("reviewer");
-    if(_reviewer) {
-      this.reviewer = _reviewer ? _reviewer : this.reviewer;
-    } else {
-      location.href = "/"
-    }
+
 
     let url = "/api/getScoreList";
     axios.get(url, {timeout: 10000}).then(res => {
