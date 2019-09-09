@@ -49,7 +49,7 @@
           <td style="width: 10%">{{idol.userName}}</td>
           <td>{{idol.group}}</td>
           <td style="width: 10%">
-            <img :src="idol.thumb" class="thumbImg" v-on:click="toScore(idol.key)"/>
+            <img :src="idol.thumb" class="thumbImg"/>
           </td>
         </tr>
       </tbody>
