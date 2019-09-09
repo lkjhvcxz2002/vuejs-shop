@@ -53,7 +53,8 @@ export default {
       alert("錯誤網址，請輸入正確評分網址")
     } else {
       let reviewer = encryptor.decrypt(_reviewer);
-      window.$cookies.set("reviewer", reviewer);
+      window.$cookies.set("_oriReviewer", _reviewer);
+      window.$cookies.set("reviewer", reviewer.trim());
       location.href = "/scoreList";
     }
   },
