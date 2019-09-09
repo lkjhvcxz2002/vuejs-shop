@@ -191,7 +191,6 @@ export default {
       isRenewScore: false,
       remark: "",
       ssData: _data,
-      reviewer: "林妤綾",
       reviewStanadard: reviewStanadards["2"],
       valuesObj: {},
       totalScore: 0

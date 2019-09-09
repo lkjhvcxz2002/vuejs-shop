@@ -14,8 +14,6 @@
           <th style="width: 10%">姓名</th>
           <th>報名組別</th>
           <th>照片</th>
-          <th v-if="!isReviewer">評選分數</th>
-          <th v-if="!isReviewer">評選結果</th>
         </tr>
       </thead>
       <tbody>
@@ -110,8 +108,7 @@ export default {
                 tableClass: 'table table-striped table-bordered table-hover',
                 loadingClass: 'loading',
               }
-            },
-            reviewer: "林妤綾",
+            }
         }
     },
   components: {
@@ -156,7 +153,7 @@ export default {
     if($(window).width() < 600) {
       this.isMobile = true;
     }
-    this.$refs.modal.open();
+    this.$refs.modal.open();    // popup information dialog
     this.$events.$on('filter-set', eventData => this.onFilterSet(eventData));
   },
   methods: {
