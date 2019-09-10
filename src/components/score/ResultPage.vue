@@ -49,7 +49,7 @@
           <td style="width: 10%">{{idol.userName}}</td>
           <td>{{idol.group}}</td>
           <td style="width: 10%">
-            <img :src="idol.thumb" class="thumbImg" v-on:click="toScore(idol.key)"/>
+            <img :src="idol.thumb" class="thumbImg"/>
           </td>
         </tr>
       </tbody>
@@ -68,7 +68,6 @@ import { SweetModal } from 'sweet-modal-vue'
 export default {
     data() {
         return {
-            isReviewer: true,
             storeIdols: [],
             idols: [],
             css: {
@@ -77,7 +76,6 @@ export default {
                 loadingClass: 'loading',
               }
             },
-            reviewer: "林妤綾",
         }
     },
   components: {
@@ -96,16 +94,10 @@ export default {
         this.storeIdols.sort((a, b) => {return a.accountId - b.accountId});
 
         // If reviewer, test if reviewed already
-        if(this.isReviewer) {
-          this.storeIdols.forEach(ele => {
-            if(ele.scoreMap && ele.scoreMap[this.reviewer] != null) { 
-              ele.isReviewed = true; 
-            }
-
-            // get count score
-            ele.countScore = ((292 - ele.countOrder) / 291 * 30).toFixed(2);
-          });
-        }
+        this.storeIdols.forEach(ele => {
+          // get count score
+          ele.countScore = ((292 - ele.countOrder) / 291 * 30).toFixed(2);
+        });
 
         this.idols = this.storeIdols;
       }

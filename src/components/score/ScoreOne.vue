@@ -122,8 +122,6 @@ import RotateLoader from 'vue-spinner/src/RotateLoader.vue';
 import axios from 'axios';
 import scoreOrder from '../../../data/order.json'
 
-// const avail = window.$cookies.get("fbId") != null;
-const _reviewer = window.$cookies.get("reviewer");
 
 let reviewStanadards = {
   "1": {
@@ -193,7 +191,6 @@ export default {
       isRenewScore: false,
       remark: "",
       ssData: _data,
-      reviewer: "林妤綾",
       reviewStanadard: reviewStanadards["2"],
       valuesObj: {},
       totalScore: 0
@@ -221,7 +218,12 @@ export default {
     }
   },
   mounted() {
-    this.reviewer = _reviewer ? _reviewer : this.reviewer;
+    const _reviewer = window.$cookies.get("reviewer");
+    if(_reviewer) {
+      this.reviewer = _reviewer ? _reviewer : this.reviewer;
+    } else {
+      location.href = "/"
+    }
 
     this.targetId = this.$route.params.key;
     let url = "/api/getScore" + (this.targetId ? "/" + this.targetId : "");
