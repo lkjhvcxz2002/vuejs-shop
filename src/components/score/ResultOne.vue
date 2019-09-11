@@ -15,7 +15,7 @@
       <h5 style="color: red">組別: {{ssData.group}} </h5>
     </div>
     <div class="col-md-5 ui raised segment" style="padding-right: 0px">
-      <span class="ui pink label ribbon">評審得分 <span style="font-size: 20px"> {{ssData.reviewersScore.toFixed(2)}}</span></span> 
+      <span class="ui pink label ribbon" v-if="!isProductLoading">評審給分 <span style="font-size: 20px"> {{ssData.reviewersScore.toFixed(2)}}</span></span> 
       <img :key="ssData.key" class="card-img p-3" style="margin-left: -20px"
         @click="showLightbox()"  
         :src="ssData.pic" @load="loaded" />

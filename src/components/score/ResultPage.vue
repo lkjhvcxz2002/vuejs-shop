@@ -39,6 +39,7 @@
               </div>
             </div>
             <p class="resultTest">獲得總分: <span class="redText">(尚未完成))</span> / 100%</p>
+            <p v-if="openResult"><a :href="'/resultPage/' + idol.key">(查看評分內容)</a></p>
           </td>
           <td>
             {{idol.accountId}}
@@ -68,14 +69,15 @@ import { SweetModal } from 'sweet-modal-vue'
 export default {
     data() {
         return {
-            storeIdols: [],
-            idols: [],
-            css: {
-              table: {
-                tableClass: 'table table-striped table-bordered table-hover',
-                loadingClass: 'loading',
-              }
-            },
+          openResult: false,
+          storeIdols: [],
+          idols: [],
+          css: {
+            table: {
+              tableClass: 'table table-striped table-bordered table-hover',
+              loadingClass: 'loading',
+            }
+          },
         }
     },
   components: {
@@ -84,7 +86,7 @@ export default {
     'filter-bar': FilterBar,
   },
   mounted() {
-
+    this.openResult = new Date().getTime() > 1568376000000;
 
     let url = "/api/getScoreList";
     axios.get(url, {timeout: 10000}).then(res => {
