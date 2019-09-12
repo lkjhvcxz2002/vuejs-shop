@@ -23,12 +23,7 @@
         <tbody>
           <tr v-for="(idol, index) in idols" v-if="idol.userName">
             <td v-if="reviewer">
-              <div v-if="idol.isReviewed">
-                <button class="btn btn-success btn-small" v-on:click="toScore(idol.key)">修改分數</button>
-              </div>
-              <div v-if="!idol.isReviewed"> 
-                <button class="btn btn-primary btn-small" v-on:click="toScore(idol.key)">前往評分</button>
-              </div>
+
             </td>
             <td v-if="reviewer" style="padding-top: 20px">
               <span class="bg-primary text-white" v-if="idol.isReviewed">
