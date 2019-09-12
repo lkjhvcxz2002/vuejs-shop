@@ -70,12 +70,10 @@
             </td>
             <td style="width: 10%">{{idol.userName}}</td>
             <td>{{idol.group}}</td>
-            <td>
-              <div class="ui fluid image">
-                <span class="ui pink label ribbon lableText" v-if="idol.isEnRolled">恭喜獲選，第 {{resultJ['enroll'].indexOf(parseInt(idol.key)) + 1}} 位</span> 
-                <span class="ui orange label ribbon lableText" v-if="idol.isExcluded">重複獲選，資格遞延</span> 
-                <a :href="'/resultPage/' + idol.key"><img :src="idol.thumb" class="card-img p-3"/></a>
-              </div>
+            <td style="text-align: center">
+              <span class="ui pink label lableText" v-if="idol.isEnRolled">恭喜獲選，第 {{resultJ['enroll'].indexOf(parseInt(idol.key)) + 1}} 位</span> 
+              <span class="ui orange label lableText" v-if="idol.isExcluded">重複獲選，資格遞延</span> 
+              <a :href="'/resultPage/' + idol.key"><img :src="idol.thumb" class="card-img p-3"/></a>
             </td>
           </tr>
         </tbody>
