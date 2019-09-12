@@ -25,10 +25,8 @@
         <li v-on:click="toDetail()" tag="li" style="cursor:pointer" class="nav-item" active-class="active">
           <a class="nav-link">活動細節</a>
         </li>
-        <li v-on:click="toRegister()" tag="li" style="cursor:pointer" class="nav-item" active-class="active">
-          <a class="nav-link">報名參加 
-            <span class="span-remark" style="color: rgb(0, 0, 0);font-size: 12px;">(已截止)</span>
-          </a>
+        <li v-on:click="toBuy()" tag="li" style="cursor:pointer" class="nav-item" active-class="active">
+          <a class="nav-link" style="color: #0e00c7;font-weight: bold;">桌曆預購</a>
         </li>
         <router-link :to="voteLink" tag="li" v-if="isOpen && !avail" class="nav-item" style="padding: 2px;">
           <a class="nav-link" style="color: blue">投票登入</a>
@@ -87,6 +85,10 @@ export default {
     },
     toRegister() {
         let registerUrl ="https://docs.google.com/forms/d/1LRwxeKCBumzFuQ-lOlxYJbMdBCvSSB2EbgV_WDJshiw/edit";
+        window.open(registerUrl, "_blank");
+    },
+    toBuy() {
+        let registerUrl ="https://forms.gle/mDDaKYgeqT1mMbFm6";
         window.open(registerUrl, "_blank");
     },
     toResult() {

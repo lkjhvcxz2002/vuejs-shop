@@ -2,28 +2,25 @@
 <div class="container">
   <filter-bar></filter-bar>
   <div style="margin-top: 20px" class="col-md-12 col-sm-12">
-
     <table class="table table-striped table-bordered table-hover table-responsive" >
       <thead>
         <tr>
-          <th>評選結果</th>
-          <th>獲得分數</th>
-          <th>報名序號</th>
-          <th>照片編號</th>
-          <th style="width: 10%">姓名</th>
-          <th>報名組別</th>
-          <th>照片</th>
+            <th style="width: 25%" v-if="openResult">評分結果</th>
+            <th>報名序號</th>
+            <th>照片編號</th>
+            <th style="width: 5%">姓名</th>
+            <th>報名組別</th>
+            <th style="width: 20%">照片</th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="(idol, index) in idols" v-if="idol.userName">
-          <td>
-            尚未公布
-          </td>
-          <!-- <td v-on:click="showDetail(idol, index)" style="cursor: pointer"> -->
-          <td>
-            <p class="resultTest">網路投票: <span class="redText">{{idol.countScore}}</span> / 30% <span class="tinyText">票數: {{idol.count}}, 排名: {{idol.countOrder}}</span></p>
-            <p class="resultTest">評審評分: <span class="redText">(尚未完成))</span> / 70%</p>
+          <td @click="showDetail(idol, index)" style="cursor: pointer" v-if="openResult">
+            <p class="resultTest">網路投票: <span class="redText">{{idol.countScore.toFixed(2)}}</span> / 30%</p>
+            <p class="tinyText">票數: {{idol.count}}, 排名: {{idol.countOrder}}</p>
+            <p class="resultTest">評審評分: <span class="redText">{{idol.reviewersScore.toFixed(2)}}</span> / 70%</p>
+            <p class="tinyText">(點我看細節)</p>
+            <p class="resultTest">獲得總分: <span class="redText">{{idol.totalScore.toFixed(2)}}</span> / 100%</p>
             <div v-if="idol.isShowDetail">
               <div v-for="(value, name, index) in idol.scoreMap">
                 <p>評審: <span style="color: purple">{{name}}</span>, 評分: <span style="color: red">{{value.total}}</span>
@@ -38,8 +35,6 @@
                 </p>
               </div>
             </div>
-            <p class="resultTest">獲得總分: <span class="redText">(尚未完成))</span> / 100%</p>
-            <p v-if="openResult"><a :href="'/resultPage/' + idol.key">(查看評分內容)</a></p>
           </td>
           <td>
             {{idol.accountId}}
@@ -47,10 +42,15 @@
           <td>
             {{idol.key}}
           </td>
-          <td style="width: 10%">{{idol.userName}}</td>
+          <td>{{idol.userName}}</td>
           <td>{{idol.group}}</td>
-          <td style="width: 10%">
-            <img :src="idol.thumb" class="thumbImg"/>
+          <td style="text-align: center" v-if="openResult">
+              <span class="ui pink label lableText" v-if="idol.isEnRolled">恭喜獲選，第 {{resultJ['enroll'].indexOf(parseInt(idol.key)) + 1}} 位</span> 
+              <span class="ui orange label lableText" v-if="idol.isExcluded">重複獲選，資格遞延</span> 
+              <a :href="'/resultPage/' + idol.key"><img :src="idol.thumb" class="card-img p-3"/></a>
+          </td>
+          <td v-if="!openResult">
+            <img :src="idol.thumb" class="card-img p-3"/>
           </td>
         </tr>
       </tbody>
@@ -60,10 +60,9 @@
 </template>
 
 <script>
-import Vuetable from 'vuetable-2'
 import FilterBar from '../product/FilterBar'
-import sampleData from '../../../data/mockScoreList.json'
 import axios from 'axios';
+import result from '../../../data/result.json'
 import { SweetModal } from 'sweet-modal-vue'
 
 export default {
@@ -78,33 +77,38 @@ export default {
               loadingClass: 'loading',
             }
           },
+          resultJ: {}
         }
     },
   components: {
     'SweetModal': SweetModal,
-    Vuetable,
     'filter-bar': FilterBar,
   },
   mounted() {
-    this.openResult = new Date().getTime() > 1568376000000;
+    this.openResult = new Date().getTime() > 1568304000000;
 
     let url = "/api/getScoreList";
     axios.get(url, {timeout: 10000}).then(res => {
       if(res && res.data && res.data.length > 0) {
         this.storeIdols = res.data;
-
-        this.storeIdols.sort((a, b) => {return a.accountId - b.accountId});
-
-        // If reviewer, test if reviewed already
+        
+        this.resultJ = result;
         this.storeIdols.forEach(ele => {
           // get count score
-          ele.countScore = ((292 - ele.countOrder) / 291 * 30).toFixed(2);
+          ele.countScore = ((292 - ele.countOrder) / 291 * 30);
+          ele.totalScore = ele.countScore + ele.reviewersScore;
+          ele.isEnRolled = this.resultJ['enroll'].indexOf(parseInt(ele.key)) != -1;
+          ele.isExcluded = this.resultJ['exclude'].indexOf(parseInt(ele.key)) != -1;
         });
 
+        this.isLoading = false;
         this.idols = this.storeIdols;
+        // this.$refs.modal.open();    // popup information dialog
+        if(this.openResult) this.orderByScore();
+        else this.storeIdols.sort((a, b) => { return a.accountId - b.accountId})
       }
     }).catch(err => {
-      console.log("取得資料失敗，請回報主辦單位: " + err)
+      alert("取得資料失敗，請回報主辦單位: " + err)
       this.storeIdols = sampleData;
       this.storeIdols.sort((a, b) => {return a.accountId - b.accountId});
       this.idols = this.storeIdols;
@@ -123,6 +127,10 @@ export default {
     onFilterSet(filterText) {
       if(filterText) this.idols = this.storeIdols.filter(o => o.userName && o.userName.toLowerCase().indexOf(filterText) != -1);
       else this.idols = this.storeIdols;
+    },
+    orderByScore() {
+       this.storeIdols.sort((a, b) => {return b.totalScore - a.totalScore});
+      this.idols.sort((a, b) => {return b.totalScore - a.totalScore});
     }
   },
 }
