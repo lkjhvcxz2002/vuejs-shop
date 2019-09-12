@@ -4,7 +4,7 @@
     <rotate-loader :loading="isImageLoading || isProductLoading" :color="loaderColor" :size="loaderSize"></rotate-loader>
   </div>
   <div class="row" v-if="!isProductLoading">
-    <button class="ui small primary button right floated" v-on:click="backToList()">
+    <button class="ui small primary button right floated" @click="$router.go(-1)">
       <v-icon name="arrow-left" />
       <span style="vertical-align: middle;font-size: 16px;">&nbsp;  返回列表</span>
     </button>

@@ -10,19 +10,19 @@
       <table class="table table-striped table-bordered table-hover table-responsive" >
         <thead>
           <tr>
-            <th v-if="isReviewer">操作</th>
-            <th style="width: 20%">狀態</th>
-            <th>評分結果</th>
+            <th v-if="reviewer">操作</th>
+            <th v-if="reviewer" style="width: 10%">狀態</th>
+            <th style="width: 25%">評分結果</th>
             <th>報名序號</th>
             <th>照片編號</th>
-            <th style="width: 10%">姓名</th>
+            <th style="width: 5%">姓名</th>
             <th>報名組別</th>
-            <th>照片</th>
+            <th style="width: 20%">照片</th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="(idol, index) in idols" v-if="idol.userName">
-            <td>
+            <td v-if="reviewer">
               <div v-if="idol.isReviewed">
                 <button class="btn btn-success btn-small" v-on:click="toScore(idol.key)">修改分數</button>
               </div>
@@ -30,7 +30,7 @@
                 <button class="btn btn-primary btn-small" v-on:click="toScore(idol.key)">前往評分</button>
               </div>
             </td>
-            <td style="padding-top: 20px">
+            <td v-if="reviewer" style="padding-top: 20px">
               <span class="bg-primary text-white" v-if="idol.isReviewed">
                 您以評分完成
                 <span class="bg-danger text-white" v-if="idol.scoreMap[reviewer].total == 0">，但給予的總分為0</span>
@@ -38,21 +38,23 @@
               <span class="bg-secondary  text-white" v-if="!idol.isReviewed">尚未評分</span>
             </td>
             <td v-on:click="showDetail(idol, index)" style="cursor: pointer">
-              <div v-if="idol.scoreMap && idol.reviewersScore" style="width: 120px">
-                <h2 class="percentText">{{idol.reviewersScore.toFixed(2)}} / 70 %</h2>
+              <div v-if="idol.scoreMap && idol.reviewersScore">
+                <h2>總分: {{idol.totalScore.toFixed(2)}} / 100 % </h2>
+                <h4 class="percentText">網路投票: {{idol.countScore.toFixed(2)}} / 30 %</h4>
+                <h4 class="percentText">評審給分: {{idol.reviewersScore.toFixed(2)}} / 70 %</h4>
                 <h4>已有 {{Object.keys(idol.scoreMap).length}} / 3位評審給分</h4>
                 <div v-if="idol.isShowDetail">
-                  <div v-for="(value, name, index) in idol.scoreMap">
-                    <p>評審: <span style="color: purple">{{name}}</span>, 評分: <span style="color: red">{{value.total}}</span>
+                  <div v-for="(value, name) in idol.scoreMap">
+                    <div>評審: <span style="color: purple">{{name}}</span>, 評分: <span style="color: red">{{value.total}}</span>
                       <br>
                       <span v-if="value.total > 0">
-                        <span v-for="(sv, sn, si) in value.obj">
+                        <span v-for="(sv, sn) in value.obj">
                           <span style="color: green">{{sn}}</span> - <span style="color: red">{{sv}}</span>,
                         </span>
                       </span>
                       <span v-if="value.total == 0" style="color: red">(該評審未給分數)</span>
                       <hr>
-                    </p>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -68,8 +70,12 @@
             </td>
             <td style="width: 10%">{{idol.userName}}</td>
             <td>{{idol.group}}</td>
-            <td style="width: 10%">
-              <img :src="idol.thumb" class="thumbImg" v-on:click="toScore(idol.key)"/>
+            <td>
+              <div class="ui fluid image">
+                <span class="ui pink label ribbon lableText" v-if="idol.isEnRolled">獲選，第 {{resultJ['enroll'].indexOf(parseInt(idol.key)) + 1}} 位</span> 
+                <span class="ui orange label ribbon lableText" v-if="idol.isExcluded">重複獲選，資格遞延</span> 
+                <a :href="'/resultPage/' + idol.key"><img :src="idol.thumb" class="card-img p-3"/></a>
+              </div>
             </td>
           </tr>
         </tbody>
@@ -96,9 +102,9 @@
 </template>
 
 <script>
-import Vuetable from 'vuetable-2'
 import FilterBar from '../product/FilterBar'
 import sampleData from '../../../data/mockScoreList.json'
+import result from '../../../data/result.json'
 import axios from 'axios';
 import { SweetModal } from 'sweet-modal-vue';
 import RotateLoader from 'vue-spinner/src/RotateLoader.vue';
@@ -118,12 +124,12 @@ export default {
                 tableClass: 'table table-striped table-bordered table-hover',
                 loadingClass: 'loading',
               }
-            }
+            },
+            resultJ: {}
         }
     },
   components: {
     'SweetModal': SweetModal,
-    Vuetable,
     RotateLoader,
     'filter-bar': FilterBar,
   },
@@ -131,8 +137,6 @@ export default {
     const _reviewer = window.$cookies.get("reviewer");
     if(_reviewer) {
       this.reviewer = _reviewer ? _reviewer : this.reviewer;
-    } else {
-      location.href = "/"
     }
 
     let url = "/api/getScoreList";
@@ -140,25 +144,41 @@ export default {
       if(res && res.data && res.data.length > 0) {
         this.storeIdols = res.data;
 
-        this.storeIdols.sort((a, b) => {return a.accountId - b.accountId});
-
         // If reviewer, test if reviewed already
+        this.resultJ = result;
         if(this.isReviewer) {
           this.storeIdols.forEach(ele => {
             if(ele.scoreMap && ele.scoreMap[this.reviewer] != null) { 
               ele.isReviewed = true; 
             }
+
+            // get count score
+            ele.countScore = ((292 - ele.countOrder) / 291 * 30);
+            ele.totalScore = ele.countScore + ele.reviewersScore;
+            ele.isEnRolled = this.resultJ['enroll'].indexOf(parseInt(ele.key)) != -1;
+            ele.isExcluded = this.resultJ['exclude'].indexOf(parseInt(ele.key)) != -1;
           });
         }
 
         this.isLoading = false;
         this.idols = this.storeIdols;
-        this.$refs.modal.open();    // popup information dialog
+        // this.$refs.modal.open();    // popup information dialog
+        this.orderByScore();
       }
     }).catch(err => {
+      this.resultJ = result;
       this.isLoading = false;
       alert("取得資料失敗，請回報主辦單位: " + err)
       this.storeIdols = sampleData;
+
+      this.storeIdols.forEach(ele => {
+        ele.isEnRolled = this.resultJ['enroll'].indexOf(parseInt(ele.key)) != -1;
+        ele.isExcluded = this.resultJ['exclude'].indexOf(parseInt(ele.key)) != -1;
+
+        // get count score
+        ele.countScore = 0;
+        ele.totalScore = 0;
+      });
       this.storeIdols.sort((a, b) => {return a.accountId - b.accountId});
       this.idols = this.storeIdols;
     })
@@ -181,6 +201,9 @@ export default {
     onFilterSet(filterText) {
       if(filterText) this.idols = this.storeIdols.filter(o => o.userName && o.userName.toLowerCase().indexOf(filterText) != -1);
       else this.idols = this.storeIdols;
+    },
+    orderByScore() {
+      this.idols.sort((a, b) => {return b.totalScore - a.totalScore});
     }
   },
 }
@@ -188,6 +211,10 @@ export default {
 
 <style src="vue-pure-lightbox/dist/VuePureLightbox.css"></style>
 <style lang="scss" scoped>
+.lableText {
+  font-size: 12px;
+}
+
 div.card {
   height: 100%;
 }
